@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -49,7 +48,7 @@ public class LibraryService {
         library.getArtists().forEach(artist -> CacheService.getArtistMap().put(artist.getArtistId(), artist));
         log.info(String.format("Loaded %d songs from library file.", library.getSongs().size()));
       } catch (IOException e) {
-        log.error("Could not load library from " + ConfigService.getConfig().getLibraryFile(), e);
+        log.error("Could not load library from " + ConfigService.getConfig().getHomePath(), e);
       }
     }
   }

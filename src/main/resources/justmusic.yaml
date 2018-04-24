@@ -1,2 +1,2 @@
-libraryFile: D:/justmusic.json
-mediaPath: D:/music
+homePath: ${user.home}/.jmj
+mediaPath: ${user.home}/Music
