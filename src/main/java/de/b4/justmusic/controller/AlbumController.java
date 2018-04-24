@@ -24,7 +24,7 @@ public class AlbumController {
           get(":id", AlbumController.getById);
           get(":id/songs", AlbumController.getSongs);
           get(":id/cover", AlbumController.cover);
-          delete(":id", AlbumController.getById);
+          delete(":id", AlbumController.deleteById);
         });
       });
     });

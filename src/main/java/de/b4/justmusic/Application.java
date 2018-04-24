@@ -1,10 +1,8 @@
 package de.b4.justmusic;
 
-import de.b4.justmusic.controller.AlbumController;
-import de.b4.justmusic.controller.ArtistController;
-import de.b4.justmusic.controller.LoginController;
-import de.b4.justmusic.controller.SongController;
+import de.b4.justmusic.controller.*;
 import de.b4.justmusic.service.LibraryService;
+import de.b4.justmusic.service.PlaylistService;
 import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +26,7 @@ public class Application {
     SongController.addRoutes(app);
     AlbumController.addRoutes(app);
     ArtistController.addRoutes(app);
+    PlaylistController.addRoutes(app);
 
     app.error(404, ctx -> {
       Map<String, Object> result = new HashMap<>();
@@ -44,6 +43,7 @@ public class Application {
 
     LibraryService libraryService = LibraryService.getLibraryService();
     libraryService.loadLibrary();
+    PlaylistService.getPlaylistService().loadPlaylists();
     CompletableFuture.supplyAsync(() -> libraryService.scanMedia());
     //LibraryService.getLibraryService().scanMedia();
   }

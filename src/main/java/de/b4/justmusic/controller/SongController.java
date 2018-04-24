@@ -30,7 +30,7 @@ public class SongController {
           get(":id", SongController.getById);
           get(":id/stream", SongController.stream);
           get(":id/cover", SongController.cover);
-          delete(":id", SongController.getById);
+          delete(":id", SongController.deleteById);
         });
       });
     });

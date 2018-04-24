@@ -1,5 +1,6 @@
 package de.b4.justmusic.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mpatric.mp3agic.*;
 import de.b4.justmusic.entity.Album;
@@ -43,10 +44,16 @@ public class LibraryService {
       try {
         Library library = mapper.readValue(file, Library.class);
         CacheService.getSongMap().clear();
-        library.getSongs().forEach(song -> CacheService.getSongMap().put(song.getSongId(), song));
-        library.getAlbums().forEach(album -> CacheService.getAlbumMap().put(album.getAlbumId(), album));
-        library.getArtists().forEach(artist -> CacheService.getArtistMap().put(artist.getArtistId(), artist));
-        log.info(String.format("Loaded %d songs from library file.", library.getSongs().size()));
+        if (library.getSongs() != null) {
+          library.getSongs().forEach(song -> {
+            CacheService.getSongMap().put(song.getSongId(), song);
+            if (song.getAlbum() != null)
+              CacheService.getAlbumMap().putIfAbsent(song.getAlbum().getAlbumId(), song.getAlbum());
+            if (song.getArtist() != null)
+              CacheService.getArtistMap().putIfAbsent(song.getArtist().getArtistId(), song.getArtist());
+          });
+        }
+        log.info(String.format("Loaded %d songs from library file.", CacheService.getSongMap().size()));
       } catch (IOException e) {
         log.error("Could not load library from " + ConfigService.getConfig().getHomePath(), e);
       }
@@ -57,8 +64,6 @@ public class LibraryService {
     log.info("Save library to " + ConfigService.getConfig().getLibraryFile());
 
     Library library = new Library();
-    library.setAlbums(CacheService.getAlbumMap().values());
-    library.setArtists(CacheService.getArtistMap().values());
     library.setSongs(CacheService.getSongMap().values());
 
     File file = new File(ConfigService.getConfig().getLibraryFile());
@@ -102,6 +107,14 @@ public class LibraryService {
       return true;
     }
     return false;
+  }
+
+  public Song findSongByPath(String path) {
+    Optional<Song> optionalSong = CacheService.getSongMap().values().parallelStream().filter(s -> s.getPath().equals(path)).findFirst();
+    if (optionalSong.isPresent()) {
+      return optionalSong.get();
+    }
+    return null;
   }
 
   /*
@@ -385,36 +398,6 @@ public class LibraryService {
     }
   }
 
-  public static class Library {
-    private Collection<Song> songs;
-    private Collection<Album> albums;
-    private Collection<Artist> artists;
-
-    public Collection<Song> getSongs() {
-      return songs;
-    }
-
-    public void setSongs(Collection<Song> songs) {
-      this.songs = songs;
-    }
-
-    public Collection<Album> getAlbums() {
-      return albums;
-    }
-
-    public void setAlbums(Collection<Album> albums) {
-      this.albums = albums;
-    }
-
-    public Collection<Artist> getArtists() {
-      return artists;
-    }
-
-    public void setArtists(Collection<Artist> artists) {
-      this.artists = artists;
-    }
-  }
-
   public Cover getCoverForSong(Song song) {
     try {
       Mp3File mp3File = new Mp3File(song.getPath());
@@ -473,5 +456,18 @@ public class LibraryService {
   }
   public Cover getCoverForAlbum(Album album) {
     return null;
+  }
+
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  public static class Library {
+    private Collection<Song> songs;
+
+    public Collection<Song> getSongs() {
+      return songs;
+    }
+
+    public void setSongs(Collection<Song> songs) {
+      this.songs = songs;
+    }
   }
 }

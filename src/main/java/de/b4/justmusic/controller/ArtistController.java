@@ -20,7 +20,7 @@ public class ArtistController {
           put("", ArtistController.updateArtist);
           get(":id", ArtistController.getById);
           get(":id/songs", ArtistController.getSongs);
-          delete(":id", ArtistController.getById);
+          delete(":id", ArtistController.deleteById);
         });
       });
     });
