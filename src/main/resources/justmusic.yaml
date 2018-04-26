@@ -1,2 +1,4 @@
 homePath: ${user.home}/.jmj
 mediaPath: D:/music
+security:
+  secret: justmusic-secret

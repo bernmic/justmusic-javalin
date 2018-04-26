@@ -65,6 +65,9 @@ public class ConfigService {
           log.error("Error creating playlist dir " + config.getPlaylistPath(), e);
         }
       }
+      if (map.containsKey("security")) {
+        config.setSecuritySecret((String)((Map)map.get("security")).get("secret"));
+      }
     }
     return config;
   }
@@ -74,6 +77,7 @@ public class ConfigService {
     private String mediaPath;
     private String libraryFile;
     private String playlistPath;
+    private String securitySecret;
 
     public String getHomePath() {
       return homePath;
@@ -105,6 +109,14 @@ public class ConfigService {
 
     public void setPlaylistPath(String playlistPath) {
       this.playlistPath = playlistPath;
+    }
+
+    public String getSecuritySecret() {
+      return securitySecret;
+    }
+
+    public void setSecuritySecret(String securitySecret) {
+      this.securitySecret = securitySecret;
     }
   }
 }

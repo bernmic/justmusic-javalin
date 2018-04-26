@@ -29,10 +29,15 @@ public class Application {
     PlaylistController.addRoutes(app);
 
     app.error(404, ctx -> {
-      Map<String, Object> result = new HashMap<>();
-      result.put("status", 404);
-      result.put("message", "Not found");
-      ctx.json(result);
+      if (!ctx.uri().startsWith("/api/")) {
+        ctx.redirect("/");
+      }
+      else {
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", 404);
+        result.put("message", "Not found");
+        ctx.json(result);
+      }
     });
     app.error(401, ctx -> {
       Map<String, Object> result = new HashMap<>();
