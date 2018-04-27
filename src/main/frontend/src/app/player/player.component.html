@@ -1,0 +1,12 @@
+<mat-card class="player">
+  <mat-card-header>
+    <mat-card-title>{{currentSong?.title}}</mat-card-title>
+    <mat-card-subtitle>{{currentSong?.artist?.name}}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image src="../assets/defaultAlbum.png" #cover width="300px" />
+  <mat-card-content>
+    <p>Play controls</p>
+    <mat-divider> </mat-divider>
+    <p>play queue goes here</p>
+  </mat-card-content>
+</mat-card>

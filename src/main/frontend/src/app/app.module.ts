@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
+import { HttpClientModule } from "@angular/common/http";
+import { FormsModule } from "@angular/forms";
 import {
   MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatGridListModule,
   MatIconModule, MatInputModule, MatListModule,
@@ -14,18 +16,29 @@ import {LayoutModule} from "@angular/cdk/layout";
 
 import { AppComponent } from './app.component';
 import { PlaylistComponent } from './playlist/playlist.component';
-import {HttpClientModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
+import { PlaylistService } from "./playlist/playlist.service";
+import {PlaylistDetailComponent} from "./playlist/playlist-detail.component";
+import { SongComponent } from './song/song.component';
+import { AlbumComponent } from './album/album.component';
+import { ArtistComponent } from './artist/artist.component';
+import {SongService} from "./song/song.service";
+import { PlayerComponent } from './player/player.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'playlist', pathMatch: 'full' },
-  { path: 'playlist', component: PlaylistComponent }
+  { path: 'playlist', component: PlaylistComponent },
+  { path: 'playlist/:id', component: PlaylistDetailComponent }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    PlaylistDetailComponent,
+    SongComponent,
+    AlbumComponent,
+    ArtistComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +65,10 @@ export const routes: Routes = [
     MatTableModule,
     MatToolbarModule
   ],
-  providers: [],
+  providers: [
+    PlaylistService,
+    SongService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

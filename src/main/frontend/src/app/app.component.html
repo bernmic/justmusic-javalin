@@ -18,26 +18,26 @@
       <mat-sidenav [opened]="!mobileQuery.matches" #lsnav [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <mat-nav-list>
-          <mat-list-item routerLinkActive="active" [routerLink]="['/dashboard']" >
+          <mat-list-item routerLinkActive="active" [routerLink]="['/playlist']" >
             <mat-icon matListIcon color="accent">dashboard</mat-icon>
             <span i18n="@@navDashboard">Overview</span>
           </mat-list-item>
 
           <mat-divider> </mat-divider>
 
-          <mat-list-item routerLinkActive="active" routerLink="text" class="mat-primary">
+          <mat-list-item routerLinkActive="active" routerLink="playlist" class="mat-primary">
             <mat-icon matListIcon color="accent">featured_play_list</mat-icon>
             <span i18n="@@navText">Playlists</span>
           </mat-list-item>
-          <mat-list-item routerLinkActive="active" routerLink=".  ">
+          <mat-list-item routerLinkActive="active" routerLink="artist">
             <mat-icon matListIcon color="accent">people</mat-icon>
             <span i18n="@@navData">Artists</span>
           </mat-list-item>
-          <mat-list-item routerLinkActive="active" routerLink=".">
+          <mat-list-item routerLinkActive="active" routerLink="album">
             <mat-icon matListIcon color="accent">album</mat-icon>
             <span i18n="@@navUsers">Albums</span>
           </mat-list-item>
-          <mat-list-item routerLinkActive="active" routerLink=".">
+          <mat-list-item routerLinkActive="active" routerLink="song">
             <mat-icon matListIcon color="accent">library_music</mat-icon>
             <span i18n="@@navUsers">Songs</span>
           </mat-list-item>
@@ -46,9 +46,7 @@
 
       <mat-sidenav #rsnav position="end" [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-        <mat-nav-list>
-          <a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>
-        </mat-nav-list>
+        <app-player></app-player>
       </mat-sidenav>
 
       <mat-sidenav-content class="main">

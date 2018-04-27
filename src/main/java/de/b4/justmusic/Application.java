@@ -19,6 +19,7 @@ public class Application {
             .create()
             .defaultContentType("application/json")
             .enableStaticFiles("/static")
+            .enableCorsForOrigin("*")
             .port(7000)
             .start();
 
