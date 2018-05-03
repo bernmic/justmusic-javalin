@@ -20,8 +20,6 @@ export class PlaylistService {
   }
 
   getSongs(id: string): Observable<Song[]> {
-    //return this.http.get<Song[]>(environment.restserver + uri);
-
     return this.songService.getSongs("/api/playlist/" + id + "/songs");
   }
 }

@@ -27,7 +27,7 @@ public class ArtistController {
   }
 
   public static Handler getAll = ctx -> {
-    ctx.json(LibraryService.getLibraryService().getArtists());
+    ctx.json(LibraryService.getLibraryService().getArtists(ctx.queryParamMap()));
   };
 
   public static Handler getById = ctx -> {
@@ -68,6 +68,6 @@ public class ArtistController {
 
   public static Handler getSongs = ctx -> {
     String id = ctx.param("id");
-    ctx.json(LibraryService.getLibraryService().getSongsForArtist(id));
+    ctx.json(LibraryService.getLibraryService().getSongsForArtist(id, ctx.queryParamMap()));
   };
 }

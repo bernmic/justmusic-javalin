@@ -31,7 +31,7 @@ public class AlbumController {
   }
 
   public static Handler getAll = ctx -> {
-    ctx.json(LibraryService.getLibraryService().getAlbums());
+    ctx.json(LibraryService.getLibraryService().getAlbums(ctx.queryParamMap()));
   };
 
   public static Handler getById = ctx -> {
@@ -72,7 +72,7 @@ public class AlbumController {
 
   public static Handler getSongs = ctx -> {
     String id = ctx.param("id");
-    ctx.json(LibraryService.getLibraryService().getSongsForAlbum(id));
+    ctx.json(LibraryService.getLibraryService().getSongsForAlbum(id, ctx.queryParamMap()));
   };
 
   public static Handler cover = ctx -> {

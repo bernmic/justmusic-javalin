@@ -1,0 +1,5 @@
+<mat-grid-list [cols]="mobileQuery.matches ? 2 : 4">
+  <mat-grid-tile *ngFor="let album of albums">
+    <button routerLink="/song/album/{{album.albumId}}"><img [src]="cover(album)" alt="{{album.title}}" width="100%"></button>
+  </mat-grid-tile>
+</mat-grid-list>

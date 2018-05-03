@@ -47,10 +47,12 @@ public class LibraryService {
         if (library.getSongs() != null) {
           library.getSongs().forEach(song -> {
             CacheService.getSongMap().put(song.getSongId(), song);
-            if (song.getAlbum() != null)
+            if (song.getAlbum() != null) {
               CacheService.getAlbumMap().putIfAbsent(song.getAlbum().getAlbumId(), song.getAlbum());
-            if (song.getArtist() != null)
+            }
+            if (song.getArtist() != null) {
               CacheService.getArtistMap().putIfAbsent(song.getArtist().getArtistId(), song.getArtist());
+            }
           });
         }
         log.info(String.format("Loaded %d songs from library file.", CacheService.getSongMap().size()));
@@ -78,8 +80,9 @@ public class LibraryService {
   /*
   SONG
    */
-  public Collection<Song> getSongs() {
-    return CacheService.getSongMap().values();
+  public Collection<Song> getSongs(Map<String,String[]> queryMap) {
+    Collection<Song> songs = CacheService.getSongMap().values();
+    return createSongCollection(songs, queryMap);
   }
 
   public Song getSongById(String id) {
@@ -120,7 +123,7 @@ public class LibraryService {
   /*
   ALBUM
    */
-  public Collection<Album> getAlbums() {
+  public Collection<Album> getAlbums(Map<String,String[]> queryMap) {
     return CacheService.getAlbumMap().values();
   }
 
@@ -151,14 +154,14 @@ public class LibraryService {
     return false;
   }
 
-  public Collection<Song> getSongsForAlbum(String id) {
+  public Collection<Song> getSongsForAlbum(String id, Map<String,String[]> queryMap) {
     return CacheService.getSongMap().values().stream().filter(s -> s.getAlbum() != null && id.equals(s.getAlbum().getAlbumId())).collect(Collectors.toList());
   }
 
   /*
   ARTIST
    */
-  public Collection<Artist> getArtists() {
+  public Collection<Artist> getArtists(Map<String,String[]> queryMap) {
     return CacheService.getArtistMap().values();
   }
 
@@ -189,7 +192,7 @@ public class LibraryService {
     return false;
   }
 
-  public Collection<Song> getSongsForArtist(String id) {
+  public Collection<Song> getSongsForArtist(String id, Map<String,String[]> queryMap) {
     return CacheService.getSongMap().values().stream().filter(s -> s.getArtist() != null && id.equals(s.getArtist().getArtistId())).collect(Collectors.toList());
   }
 
@@ -216,7 +219,7 @@ public class LibraryService {
 
     //-------------------------------------------
     log.info(String.format("Update library - Phase 2 - Filter new files."));
-    Set<String> existingsSongsPath = LibraryService.getLibraryService().getSongs().stream().map(s -> s.getPath()).collect(Collectors.toSet());
+    Set<String> existingsSongsPath = LibraryService.getLibraryService().getSongs(new HashMap<String,String[]>()).stream().map(s -> s.getPath()).collect(Collectors.toSet());
 
     Set<String> toAddSongsPath = findNotInSet(existingsSongsPath, allSongsPath);
     log.info(String.format("Found %d songs to add in %d seconds.", toAddSongsPath.size(), (System.currentTimeMillis() - millis) / 1000));
@@ -441,10 +444,6 @@ public class LibraryService {
           return new Cover("image/jpeg", imageData);
         }
       }
-      if (DEFAULT_ALBUM_COVER == null) {
-        byte[] imageData = IOUtils.toByteArray(this.getClass().getResourceAsStream("/defaultAlbum.png"));
-        DEFAULT_ALBUM_COVER = new Cover("image/png", imageData);
-      }
     } catch (IOException e) {
       log.error("Error getting cover for " + song.getPath(), e);
     } catch (UnsupportedTagException e) {
@@ -452,10 +451,29 @@ public class LibraryService {
     } catch (InvalidDataException e) {
       log.info("No cover for " + song.getPath(), e);
     }
-    return DEFAULT_ALBUM_COVER;
+    return getDefaultCover();
   }
   public Cover getCoverForAlbum(Album album) {
-    return null;
+    Optional<Song> optionalSong = CacheService.getSongMap().values().parallelStream()
+            .filter(song -> song.getAlbum() != null && album.getAlbumId().equals(song.getAlbum().getAlbumId()))
+            .findAny();
+      if (!optionalSong.isPresent()) {
+      return getDefaultCover();
+    }
+    return getCoverForSong(optionalSong.get());
+  }
+
+  private Cover getDefaultCover() {
+    if (DEFAULT_ALBUM_COVER == null) {
+      byte[] imageData = new byte[0];
+      try {
+        imageData = IOUtils.toByteArray(this.getClass().getResourceAsStream("/defaultAlbum.png"));
+      } catch (IOException e) {
+        log.error("Default album image not found!", e);
+      }
+      DEFAULT_ALBUM_COVER = new Cover("image/png", imageData);
+    }
+    return DEFAULT_ALBUM_COVER;
   }
 
   @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -469,5 +487,61 @@ public class LibraryService {
     public void setSongs(Collection<Song> songs) {
       this.songs = songs;
     }
+  }
+
+  private Collection<Song> createSongCollection(Collection<Song> songs, Map<String, String[]> queryMap) {
+    if (queryMap == null || queryMap.size() == 0) {
+      return songs;
+    }
+    String[] sort = queryMap.get("sort");
+    String[] dir = queryMap.get("dir");
+    String[] page = queryMap.get("page");
+    String[] size = queryMap.get("size");
+
+    List<Song> songList = new ArrayList<>(songs);
+    if (sort != null && sort.length > 0) {
+      for (int i = sort.length - 1; i >= 0; i--) {
+        boolean desc = dir != null && dir.length > i && "desc".equalsIgnoreCase(dir[i]);
+        if (sort[i].equals("title")) {
+          Collections.sort(songList, (s1, s2) ->
+                  desc ? s2.getTitle().compareTo(s1.getTitle()) : s1.getTitle().compareTo(s2.getTitle()));
+        }
+        else if (sort[i].equals("album")) {
+          Collections.sort(songList, (s1, s2) -> {
+            String a1 = s1.getAlbum() == null ? "" : s1.getAlbum().getTitle();
+            String a2 = s2.getAlbum() == null ? "" : s2.getAlbum().getTitle();
+            return desc ? a2.compareTo(a1) : a1.compareTo(a2);
+          });
+        }
+        else if (sort[i].equals("artist")) {
+          Collections.sort(songList, (s1, s2) -> {
+            String a1 = s1.getArtist() == null ? "" : s1.getArtist().getName();
+            String a2 = s2.getArtist() == null ? "" : s2.getArtist().getName();
+            return desc ? a2.compareTo(a1) : a1.compareTo(a2);
+          });
+        }
+        else if (sort[i].equals("duration")) {
+          Collections.sort(songList, (s1, s2) ->
+                  desc ? s2.getDuration() - s1.getDuration() : s1.getDuration() - s2.getDuration());
+        }
+        else if (sort[i].equals("track")) {
+          Collections.sort(songList, (s1, s2) ->
+                  desc ? s2.getTrack() - s1.getTrack() : s1.getTrack() - s2.getTrack());
+        }
+        else if (sort[i].equals("genre")) {
+          Collections.sort(songList, (s1, s2) ->
+                  desc ? s2.getGenre().compareTo(s1.getGenre()) : s1.getGenre().compareTo(s2.getGenre()));
+        }
+        else if (sort[i].equals("yearPublished")) {
+          Collections.sort(songList, (s1, s2) ->
+                  desc ? s2.getYearPublished().compareTo(s1.getYearPublished()) : s1.getYearPublished().compareTo(s2.getYearPublished()));
+        }
+      }
+    }
+    int ipage = (page != null && page.length > 0) ? Integer.parseInt(page[0]) : 1;
+    int isize = (size != null && size.length > 0) ? Integer.parseInt(size[0]) : ((page != null && page.length > 0) ? 20 : songs.size());
+    int start = Math.min((ipage - 1) * isize, songs.size() - 1);
+    int end = Math.min(ipage * isize, songs.size());
+    return songList.subList(start, end);
   }
 }

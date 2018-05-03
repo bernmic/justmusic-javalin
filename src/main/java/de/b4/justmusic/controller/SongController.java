@@ -3,17 +3,12 @@ package de.b4.justmusic.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.b4.justmusic.entity.Cover;
 import de.b4.justmusic.entity.Song;
-import de.b4.justmusic.security.SecurityService;
 import de.b4.justmusic.service.LibraryService;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 import static io.javalin.ApiBuilder.*;
 
@@ -37,7 +32,7 @@ public class SongController {
   }
 
   public static Handler getAll = ctx -> {
-    ctx.json(LibraryService.getLibraryService().getSongs());
+    ctx.json(LibraryService.getLibraryService().getSongs(ctx.queryParamMap()));
   };
 
   public static Handler getById = ctx -> {

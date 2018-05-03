@@ -1,3 +1,3 @@
 export class Artist {
-  constructor(public id: string, public name: string) {}
+  constructor(public artistId: string, public name: string) {}
 }

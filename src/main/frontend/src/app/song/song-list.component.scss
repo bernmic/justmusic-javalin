@@ -1,11 +1,3 @@
-.mat-header-row {
-  display: none;
-}
-
-img {
-  width: 300px;
-}
-
 .mat-row {
   min-height: 0px;
   padding: 2px 0px 2px 0px;
@@ -26,22 +18,52 @@ img {
   text-overflow: ellipsis;
 }
 .mat-header-cell {
+  font-size: 0.66rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.mat-header-row {
+  min-height: 40px;
+  padding: 0 0;
+}
+
+.mat-column-command {
+  flex: 0 0 7%;
+}
+
 .mat-column-title {
-  flex: 0 0 80%;
+  flex: 0 0 25%;
 }
 
 .mat-column-artist {
   flex: 0 0 20%;
 }
 
-.mat-column-duration {
+.mat-column-album {
   flex: 0 0 20%;
-  text-align: right;
+}
+
+.mat-column-duration {
+  flex: 0 0 8%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-yearPublished {
+  flex: 0 0 5%;
+}
+
+.mat-column-track {
+  flex: 0 0 5%;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5px;
+}
+
+.mat-column-genre {
+  flex: 0 0 10%;
 }
 
 .only-on-hover {

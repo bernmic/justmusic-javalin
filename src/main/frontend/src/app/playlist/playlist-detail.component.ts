@@ -3,6 +3,7 @@ import {PlaylistService} from "./playlist.service";
 import {Playlist} from "./playlist.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Song} from "../song/song.model";
+import {PlayerService} from "../player/player.service";
 
 @Component({
   selector: 'app-playlist-detail',
@@ -13,7 +14,7 @@ export class PlaylistDetailComponent implements OnInit {
   playlist: Playlist;
   songs: Song[];
 
-  constructor(private router: Router, private route: ActivatedRoute, private playlistService: PlaylistService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private playlistService: PlaylistService, private playerService: PlayerService) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
@@ -26,4 +27,7 @@ export class PlaylistDetailComponent implements OnInit {
     });
   }
 
+  playSong(song: Song) {
+    this.playerService.playSong(song);
+  }
 }

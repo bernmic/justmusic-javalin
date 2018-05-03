@@ -1,0 +1,3 @@
+<mat-list role="list">
+  <mat-list-item role="listitem" *ngFor="let artist of artists" routerLink="/song/artist/{{artist.artistId}}">{{artist.name}}</mat-list-item>
+</mat-list>

@@ -9,8 +9,6 @@ import {Router} from '@angular/router';
 })
 export class AppComponent implements OnDestroy{
 
-  fillerNav = Array(50).fill(0).map((_, i) => `Nav Item ${i + 1}`);
-
   mobileQuery: MediaQueryList;
 
   private _mobileQueryListener: () => void;
