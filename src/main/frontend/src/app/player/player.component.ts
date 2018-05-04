@@ -3,7 +3,7 @@ import {Song} from "../song/song.model";
 import {PlayerService} from "./player.service";
 import {Howl} from "howler";
 import {isNullOrUndefined} from "util";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs/index";
 import {MatSlider, MatTable} from "@angular/material";
 
 @Component({

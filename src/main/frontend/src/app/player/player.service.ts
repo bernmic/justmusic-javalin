@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Subject} from "rxjs/Subject";
+import {Subject} from "rxjs/index";
 import {Song} from "../song/song.model";
 import {isNullOrUndefined} from "util";
 import {environment} from "../../environments/environment";

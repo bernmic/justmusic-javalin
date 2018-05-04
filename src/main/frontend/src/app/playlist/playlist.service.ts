@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs/index";
 import {environment} from "../../environments/environment";
 import {Playlist} from "./playlist.model";
 import {SongService} from "../song/song.service";
