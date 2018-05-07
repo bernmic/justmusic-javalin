@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {Song} from "./song.model";
+import {Song, SongCollection} from "./song.model";
 import {SongService} from "./song.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PlayerService} from "../player/player.service";
@@ -58,12 +58,13 @@ export class SongListComponent implements OnInit {
     });
   }
 
-  setSongs(songs: Song[]) {
-    this.songs = songs;
+  setSongs(songCollection: SongCollection) {
+    console.log(songCollection);
+    this.songs = songCollection.songs;
     this.dataSource = new MatTableDataSource(this.songs);
     this.dataSource.sortingDataAccessor = (obj, property) => this.getProperty(obj, property);
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    //this.dataSource.paginator = this.paginator;
   }
 
   playSong(song: Song) {

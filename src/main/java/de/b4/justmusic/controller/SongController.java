@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 
 import static io.javalin.ApiBuilder.*;
 
-public class SongController {
+public class SongController extends AbstractController {
 
   public static void addRoutes(Javalin app) {
     app.routes(() -> {
@@ -32,7 +32,7 @@ public class SongController {
   }
 
   public static Handler getAll = ctx -> {
-    ctx.json(LibraryService.getLibraryService().getSongs(ctx.queryParamMap()));
+    ctx.json(LibraryService.getLibraryService().getSongs(createPagingObject(ctx.queryParamMap())));
   };
 
   public static Handler getById = ctx -> {

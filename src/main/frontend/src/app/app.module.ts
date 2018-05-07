@@ -41,6 +41,7 @@ import {DurationPipe} from "./shared/duration.pipe";
 import {SongListComponent} from "./song/song-list.component";
 import {AlbumService} from "./album/album.service";
 import {ArtistService} from "./artist/artist.service";
+import {AlbumCoverComponent} from "./album/album-cover.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'playlist', pathMatch: 'full' },
@@ -60,6 +61,7 @@ export const routes: Routes = [
     SongComponent,
     SongListComponent,
     AlbumListComponent,
+    AlbumCoverComponent,
     ArtistListComponent,
     PlayerComponent,
     DurationPipe

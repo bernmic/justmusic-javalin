@@ -1,6 +1,7 @@
 package de.b4.justmusic.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.b4.justmusic.entity.AbstractCollection;
 import de.b4.justmusic.entity.Artist;
 import de.b4.justmusic.service.LibraryService;
 import io.javalin.Handler;
@@ -8,7 +9,7 @@ import io.javalin.Javalin;
 
 import static io.javalin.ApiBuilder.*;
 
-public class ArtistController {
+public class ArtistController extends AbstractController {
 
   public static void addRoutes(Javalin app) {
     app.routes(() -> {
@@ -27,7 +28,11 @@ public class ArtistController {
   }
 
   public static Handler getAll = ctx -> {
-    ctx.json(LibraryService.getLibraryService().getArtists(ctx.queryParamMap()));
+    AbstractCollection.Paging paging = createPagingObject(ctx.queryParamMap());
+    if (paging.getSort() == null) {
+      paging.setSort("name");
+    }
+    ctx.json(LibraryService.getLibraryService().getArtists(paging));
   };
 
   public static Handler getById = ctx -> {
@@ -68,6 +73,10 @@ public class ArtistController {
 
   public static Handler getSongs = ctx -> {
     String id = ctx.param("id");
-    ctx.json(LibraryService.getLibraryService().getSongsForArtist(id, ctx.queryParamMap()));
+    AbstractCollection.Paging paging = createPagingObject(ctx.queryParamMap());
+    if (paging.getSort() == null) {
+      paging.setSort("title");
+    }
+    ctx.json(LibraryService.getLibraryService().getSongsForArtist(id, paging));
   };
 }

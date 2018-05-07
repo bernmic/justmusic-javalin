@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {PlaylistService} from "./playlist.service";
 import {Playlist} from "./playlist.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Song} from "../song/song.model";
+import {Song, SongCollection} from "../song/song.model";
 import {PlayerService} from "../player/player.service";
 
 @Component({
@@ -21,8 +21,8 @@ export class PlaylistDetailComponent implements OnInit {
       this.playlistService.getPlaylist(params.get('id')).subscribe((playlist: Playlist) => {
         this.playlist = playlist;
       });
-      this.playlistService.getSongs(params.get('id')).subscribe((songs: Song[]) => {
-        this.songs = songs;
+      this.playlistService.getSongs(params.get('id')).subscribe((songs: SongCollection) => {
+        this.songs = songs.songs;
       });
     });
   }

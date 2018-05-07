@@ -1,6 +1,8 @@
 package de.b4.justmusic.controller;
 
+import de.b4.justmusic.entity.AbstractCollection;
 import de.b4.justmusic.entity.AbstractPlaylist;
+import de.b4.justmusic.entity.SongCollection;
 import de.b4.justmusic.service.PlaylistService;
 import io.javalin.Handler;
 import io.javalin.Javalin;
@@ -41,7 +43,11 @@ public class PlaylistController {
     String id = ctx.param("id");
     AbstractPlaylist playlist = PlaylistService.getPlaylistService().getPlaylistById(id);
     if (playlist != null) {
-      ctx.json(playlist.getSongs());
+      SongCollection songCollection = new SongCollection();
+      songCollection.setSongs(playlist.getSongs());
+      songCollection.setPaging(new AbstractCollection.Paging());
+      songCollection.getPaging().setSize(songCollection.getSongs().size());
+      ctx.json(songCollection);
     }
     else {
       ctx.status(404);

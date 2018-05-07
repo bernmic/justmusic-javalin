@@ -1,5 +1,6 @@
 import {Album} from "../album/album.model";
 import {Artist} from "../artist/artist.model";
+import {Paging} from "../shared/paging.model";
 
 export class Song {
   constructor(
@@ -19,4 +20,8 @@ export class Song {
     public rating: number,
     public filedate: number
   ) {}
+}
+
+export class SongCollection {
+  constructor(public songs: Song[], public paging: Paging) {}
 }

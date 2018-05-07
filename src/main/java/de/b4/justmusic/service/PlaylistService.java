@@ -1,9 +1,6 @@
 package de.b4.justmusic.service;
 
-import de.b4.justmusic.entity.AbstractPlaylist;
-import de.b4.justmusic.entity.DynamicPlaylist;
-import de.b4.justmusic.entity.SimplePlaylist;
-import de.b4.justmusic.entity.Song;
+import de.b4.justmusic.entity.*;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +13,6 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,8 +33,12 @@ public class PlaylistService {
     return playlistService;
   }
 
-  public Collection<AbstractPlaylist> getPlaylists() {
-    return playlists;
+  public PlaylistCollection getPlaylists() {
+    PlaylistCollection playlistCollection = new PlaylistCollection();
+    playlistCollection.setPlaylists(playlists);
+    playlistCollection.setPaging(new AbstractCollection.Paging());
+    playlistCollection.getPaging().setSize(playlists.size());
+    return playlistCollection;
   }
 
   public AbstractPlaylist getPlaylistById(String id) {

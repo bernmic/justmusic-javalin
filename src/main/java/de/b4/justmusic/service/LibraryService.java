@@ -3,10 +3,8 @@ package de.b4.justmusic.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mpatric.mp3agic.*;
-import de.b4.justmusic.entity.Album;
-import de.b4.justmusic.entity.Artist;
-import de.b4.justmusic.entity.Cover;
-import de.b4.justmusic.entity.Song;
+import de.b4.justmusic.entity.AbstractCollection;
+import de.b4.justmusic.entity.*;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,9 +78,16 @@ public class LibraryService {
   /*
   SONG
    */
-  public Collection<Song> getSongs(Map<String,String[]> queryMap) {
+  public SongCollection getSongs(AbstractCollection.Paging paging) {
+    SongCollection songCollection = new SongCollection();
+    songCollection.setPaging(paging);
     Collection<Song> songs = CacheService.getSongMap().values();
-    return createSongCollection(songs, queryMap);
+    songCollection.setSongs(createSongCollection(songs, paging));
+    return songCollection;
+  }
+
+  public Collection<Song> getSongs() {
+    return CacheService.getSongMap().values();
   }
 
   public Song getSongById(String id) {
@@ -123,8 +128,12 @@ public class LibraryService {
   /*
   ALBUM
    */
-  public Collection<Album> getAlbums(Map<String,String[]> queryMap) {
-    return CacheService.getAlbumMap().values();
+  public AlbumCollection getAlbums(AbstractCollection.Paging paging) {
+    AlbumCollection albumCollection = new AlbumCollection();
+    albumCollection.setPaging(paging);
+    Collection<Album> albums = CacheService.getAlbumMap().values();
+    albumCollection.setAlbums(createAlbumCollection(albums, paging));
+    return albumCollection;
   }
 
   public Album getAlbumById(String id) {
@@ -154,15 +163,23 @@ public class LibraryService {
     return false;
   }
 
-  public Collection<Song> getSongsForAlbum(String id, Map<String,String[]> queryMap) {
-    return CacheService.getSongMap().values().stream().filter(s -> s.getAlbum() != null && id.equals(s.getAlbum().getAlbumId())).collect(Collectors.toList());
+  public SongCollection getSongsForAlbum(String id, AbstractCollection.Paging paging) {
+    SongCollection songCollection = new SongCollection();
+    songCollection.setPaging(paging);
+    List<Song> songs = CacheService.getSongMap().values().stream().filter(s -> s.getAlbum() != null && id.equals(s.getAlbum().getAlbumId())).collect(Collectors.toList());
+    songCollection.setSongs(createSongCollection(songs, paging));
+    return songCollection;
   }
 
   /*
   ARTIST
    */
-  public Collection<Artist> getArtists(Map<String,String[]> queryMap) {
-    return CacheService.getArtistMap().values();
+  public ArtistCollection getArtists(AbstractCollection.Paging paging) {
+    ArtistCollection artistCollection = new ArtistCollection();
+    artistCollection.setPaging(paging);
+    Collection<Artist> artists = CacheService.getArtistMap().values();
+    artistCollection.setArtists(createArtistCollection(artists, paging));
+    return artistCollection;
   }
 
   public Artist getArtistById(String id) {
@@ -192,8 +209,12 @@ public class LibraryService {
     return false;
   }
 
-  public Collection<Song> getSongsForArtist(String id, Map<String,String[]> queryMap) {
-    return CacheService.getSongMap().values().stream().filter(s -> s.getArtist() != null && id.equals(s.getArtist().getArtistId())).collect(Collectors.toList());
+  public SongCollection getSongsForArtist(String id, AbstractCollection.Paging paging) {
+    SongCollection songCollection = new SongCollection();
+    songCollection.setPaging(paging);
+    List<Song> songs = CacheService.getSongMap().values().stream().filter(s -> s.getArtist() != null && id.equals(s.getArtist().getArtistId())).collect(Collectors.toList());
+    songCollection.setSongs(createSongCollection(songs, paging));
+    return songCollection;
   }
 
   public boolean scanMedia() {
@@ -219,7 +240,7 @@ public class LibraryService {
 
     //-------------------------------------------
     log.info(String.format("Update library - Phase 2 - Filter new files."));
-    Set<String> existingsSongsPath = LibraryService.getLibraryService().getSongs(new HashMap<String,String[]>()).stream().map(s -> s.getPath()).collect(Collectors.toSet());
+    Set<String> existingsSongsPath = LibraryService.getLibraryService().getSongs(new AbstractCollection.Paging()).getSongs().stream().map(s -> s.getPath()).collect(Collectors.toSet());
 
     Set<String> toAddSongsPath = findNotInSet(existingsSongsPath, allSongsPath);
     log.info(String.format("Found %d songs to add in %d seconds.", toAddSongsPath.size(), (System.currentTimeMillis() - millis) / 1000));
@@ -489,59 +510,82 @@ public class LibraryService {
     }
   }
 
-  private Collection<Song> createSongCollection(Collection<Song> songs, Map<String, String[]> queryMap) {
-    if (queryMap == null || queryMap.size() == 0) {
-      return songs;
-    }
-    String[] sort = queryMap.get("sort");
-    String[] dir = queryMap.get("dir");
-    String[] page = queryMap.get("page");
-    String[] size = queryMap.get("size");
-
+  private List<Song> createSongCollection(Collection<Song> songs, AbstractCollection.Paging paging) {
     List<Song> songList = new ArrayList<>(songs);
-    if (sort != null && sort.length > 0) {
-      for (int i = sort.length - 1; i >= 0; i--) {
-        boolean desc = dir != null && dir.length > i && "desc".equalsIgnoreCase(dir[i]);
-        if (sort[i].equals("title")) {
+    if (paging.getSort() != null) {
+        boolean desc = paging.getDirection() != null && "asc".equalsIgnoreCase(paging.getDirection());
+        if (paging.getSort().equals("title")) {
           Collections.sort(songList, (s1, s2) ->
                   desc ? s2.getTitle().compareTo(s1.getTitle()) : s1.getTitle().compareTo(s2.getTitle()));
         }
-        else if (sort[i].equals("album")) {
+        else if (paging.getSort().equals("album")) {
           Collections.sort(songList, (s1, s2) -> {
             String a1 = s1.getAlbum() == null ? "" : s1.getAlbum().getTitle();
             String a2 = s2.getAlbum() == null ? "" : s2.getAlbum().getTitle();
             return desc ? a2.compareTo(a1) : a1.compareTo(a2);
           });
         }
-        else if (sort[i].equals("artist")) {
+        else if (paging.getSort().equals("artist")) {
           Collections.sort(songList, (s1, s2) -> {
             String a1 = s1.getArtist() == null ? "" : s1.getArtist().getName();
             String a2 = s2.getArtist() == null ? "" : s2.getArtist().getName();
             return desc ? a2.compareTo(a1) : a1.compareTo(a2);
           });
         }
-        else if (sort[i].equals("duration")) {
+        else if (paging.getSort().equals("duration")) {
           Collections.sort(songList, (s1, s2) ->
                   desc ? s2.getDuration() - s1.getDuration() : s1.getDuration() - s2.getDuration());
         }
-        else if (sort[i].equals("track")) {
+        else if (paging.getSort().equals("track")) {
           Collections.sort(songList, (s1, s2) ->
                   desc ? s2.getTrack() - s1.getTrack() : s1.getTrack() - s2.getTrack());
         }
-        else if (sort[i].equals("genre")) {
+        else if (paging.getSort().equals("genre")) {
           Collections.sort(songList, (s1, s2) ->
                   desc ? s2.getGenre().compareTo(s1.getGenre()) : s1.getGenre().compareTo(s2.getGenre()));
         }
-        else if (sort[i].equals("yearPublished")) {
+        else if (paging.getSort().equals("yearPublished")) {
           Collections.sort(songList, (s1, s2) ->
                   desc ? s2.getYearPublished().compareTo(s1.getYearPublished()) : s1.getYearPublished().compareTo(s2.getYearPublished()));
         }
+    }
+    paging.setSize(Math.min(paging.getSize(), songs.size()));
+    int start = Math.min((paging.getPage() - 1) * paging.getSize(), songs.size() - 1);
+    int end = Math.min(paging.getSize() * paging.getPage(), songs.size());
+    return songList.subList(start, end);
+  }
+
+  private List<Album> createAlbumCollection(Collection<Album> albums, AbstractCollection.Paging paging) {
+    List<Album> albumList = new ArrayList<>(albums);
+    if (paging.getSort() != null) {
+      boolean desc = paging.getDirection() != null && "asc".equalsIgnoreCase(paging.getDirection());
+      if (paging.getSort().equals("title")) {
+        Collections.sort(albumList, (s1, s2) ->
+                desc ? s2.getTitle().compareTo(s1.getTitle()) : s1.getTitle().compareTo(s2.getTitle()));
+      }
+      else if (paging.getSort().equals("yearPublished")) {
+        Collections.sort(albumList, (s1, s2) ->
+                desc ? s2.getYearPublished().compareTo(s1.getYearPublished()) : s1.getYearPublished().compareTo(s2.getYearPublished()));
       }
     }
-    int ipage = (page != null && page.length > 0) ? Integer.parseInt(page[0]) : 1;
-    int isize = (size != null && size.length > 0) ? Integer.parseInt(size[0]) : ((page != null && page.length > 0) ? 20 : songs.size());
-    int start = Math.min((ipage - 1) * isize, songs.size() - 1);
-    int end = Math.min(ipage * isize, songs.size());
-    return songList.subList(start, end);
+    paging.setSize(Math.min(paging.getSize(), albumList.size()));
+    int start = Math.min((paging.getPage() - 1) * paging.getSize(), albumList.size() - 1);
+    int end = Math.min(paging.getSize() * paging.getPage(), albumList.size());
+    return albumList.subList(start, end);
+  }
+
+  private List<Artist> createArtistCollection(Collection<Artist> artists, AbstractCollection.Paging paging) {
+    List<Artist> artistList = new ArrayList<>(artists);
+    if (paging.getSort() != null) {
+      boolean desc = paging.getDirection() != null && "asc".equalsIgnoreCase(paging.getDirection());
+      if (paging.getSort().equals("name")) {
+        Collections.sort(artistList, (s1, s2) ->
+                desc ? s2.getName().compareTo(s1.getName()) : s1.getName().compareTo(s2.getName()));
+      }
+    }
+    paging.setSize(Math.min(paging.getSize(), artistList.size()));
+    int start = Math.min((paging.getPage() - 1) * paging.getSize(), artistList.size() - 1);
+    int end = Math.min(paging.getSize() * paging.getPage(), artistList.size());
+    return artistList.subList(start, end);
   }
 }
