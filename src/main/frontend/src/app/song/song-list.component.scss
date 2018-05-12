@@ -67,11 +67,12 @@
 }
 
 .only-on-hover {
-  opacity: 0;
+  opacity: 0.25;
   transition: all ease 0.8s;
   font-size: 16px;
   height: 16px;
   width: 16px;
+  cursor: pointer;
 }
 
 .only-on-hover:hover {

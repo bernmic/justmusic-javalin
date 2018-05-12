@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {
   MatButtonModule,
@@ -15,12 +15,14 @@ import {
   MatInputModule,
   MatListModule,
   MatMenuModule,
-  MatNativeDateModule, MatPaginatorModule,
-  MatProgressBarModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule, MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
   MatSliderModule,
+  MatSnackBarModule,
   MatSortModule,
   MatTableModule,
   MatToolbarModule
@@ -42,6 +44,11 @@ import {SongListComponent} from "./song/song-list.component";
 import {AlbumService} from "./album/album.service";
 import {ArtistService} from "./artist/artist.service";
 import {AlbumCoverComponent} from "./album/album-cover.component";
+import {UnixdatePipe} from "./shared/unixdate.pipe";
+import {LoginComponent} from "./security/login.component";
+import {AuthService} from "./security/auth.service";
+import {AuthGuardService} from "./security/auth-guard.service";
+import {TokenInterceptor} from "./security/token.interceptor";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'playlist', pathMatch: 'full' },
@@ -50,7 +57,8 @@ export const routes: Routes = [
   { path: 'song', component: SongListComponent },
   { path: 'song/:type/:id', component: SongListComponent },
   { path: 'album', component: AlbumListComponent },
-  { path: 'artist', component: ArtistListComponent }
+  { path: 'artist', component: ArtistListComponent },
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
@@ -64,7 +72,9 @@ export const routes: Routes = [
     AlbumCoverComponent,
     ArtistListComponent,
     PlayerComponent,
-    DurationPipe
+    LoginComponent,
+    DurationPipe,
+    UnixdatePipe
   ],
   imports: [
     BrowserModule,
@@ -90,7 +100,9 @@ export const routes: Routes = [
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
+    MatSnackBarModule,
     MatSortModule,
+    MatProgressSpinnerModule,
     MatTableModule,
     MatToolbarModule
   ],
@@ -99,7 +111,14 @@ export const routes: Routes = [
     SongService,
     PlayerService,
     AlbumService,
-    ArtistService
+    ArtistService,
+    AuthService,
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

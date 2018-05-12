@@ -1,57 +1,39 @@
-.mat-header-row {
-  display: none;
-}
-
 img {
   width: 300px;
 }
 
-.mat-row {
-  min-height: 0px;
-  padding: 2px 0px 2px 0px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.mat-row:hover {
-  background-color: beige;
+table, tr {
+  width: 100%;
   cursor: pointer;
 }
-
-.mat-cell {
+th,td {
+  text-align: left;
   font-size: 0.66rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.mat-header-cell {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+tr:hover {
+  background-color: beige;
 }
 
-.mat-column-title {
-  flex: 0 0 80%;
+th.title {
+  width: 60%;
 }
 
-.mat-column-artist {
-  flex: 0 0 20%;
+th.artist {
+  width: 40%;
 }
 
-.mat-column-duration {
-  flex: 0 0 20%;
-  text-align: right;
+.current-song-title {
+  font-weight: bold;
 }
 
-.only-on-hover {
-  opacity: 0;
-  transition: all ease 0.8s;
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
+.current-song-title::before {
+  content: "> ";
 }
 
-.only-on-hover:hover {
-  opacity: 1;
+.current-song-artist {
+  font-weight: bold;
 }

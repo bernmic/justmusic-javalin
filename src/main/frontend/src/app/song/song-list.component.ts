@@ -59,7 +59,6 @@ export class SongListComponent implements OnInit {
   }
 
   setSongs(songCollection: SongCollection) {
-    console.log(songCollection);
     this.songs = songCollection.songs;
     this.dataSource = new MatTableDataSource(this.songs);
     this.dataSource.sortingDataAccessor = (obj, property) => this.getProperty(obj, property);
@@ -73,6 +72,10 @@ export class SongListComponent implements OnInit {
 
   queueSong(song: Song) {
     this.playerService.addSong(song);
+  }
+
+  queueSongs() {
+    this.songs.forEach(song => this.playerService.addSong(song));
   }
 
   getProperty = (obj, path) => (

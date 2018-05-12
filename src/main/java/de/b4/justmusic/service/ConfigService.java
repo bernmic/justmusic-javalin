@@ -76,6 +76,7 @@ public class ConfigService {
     private String homePath;
     private String mediaPath;
     private String libraryFile;
+    private String usersFile;
     private String playlistPath;
     private String securitySecret;
 
@@ -118,5 +119,14 @@ public class ConfigService {
     public void setSecuritySecret(String securitySecret) {
       this.securitySecret = securitySecret;
     }
+
+    public String getUsersFile() {
+      return usersFile == null ? homePath + "/users.json" : usersFile;
+    }
+
+    public void setUsersFile(String usersFile) {
+      this.usersFile = usersFile;
+    }
+
   }
 }

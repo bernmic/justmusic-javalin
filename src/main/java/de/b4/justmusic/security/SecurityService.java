@@ -1,6 +1,8 @@
 package de.b4.justmusic.security;
 
 import de.b4.justmusic.Application;
+import de.b4.justmusic.entity.User;
+import de.b4.justmusic.service.UserService;
 import io.javalin.HaltException;
 import io.javalin.Handler;
 import io.javalin.security.Role;
@@ -41,7 +43,8 @@ public class SecurityService {
     String username = ctx.basicAuthCredentials() != null ? ctx.basicAuthCredentials().getUsername() : "";
     String password = ctx.basicAuthCredentials() != null ? ctx.basicAuthCredentials().getPassword() : "";
 
-    if ("user".equals(username) && "user".equals(password)) {
+    User user = UserService.getUserService().getUser(username);
+    if (user != null && user.getPassword().equals(password)) {
       Date expiration = new Date();
       expiration.setTime(expiration.getTime() + TOKEN_TIMEOUT);
       String compactJws = Jwts.builder()

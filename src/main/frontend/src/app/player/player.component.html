@@ -37,17 +37,17 @@
       <mat-icon>volume_up</mat-icon>
     </button>
     <mat-divider> </mat-divider>
-    <mat-table #songtable [dataSource]="songs">
-      <ng-container matColumnDef="title">
-        <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-        <mat-cell (click)="playSong(song)" *matCellDef="let song"> {{song.title}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="duration">
-        <mat-header-cell *matHeaderCellDef> Duration </mat-header-cell>
-        <mat-cell *matCellDef="let song"> {{song.duration | duration}} </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
+    <table>
+      <thead>
+        <th class="title">Title</th>
+        <th class="artist">Artist</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let song of songs" (click)="playSong(song)">
+          <td [class.current-song-title]="isCurrentSong(song)">{{song.title}}</td>
+          <td [class.current-song-artist]="isCurrentSong(song)">{{song.artist?.name}}</td>
+        </tr>
+      </tbody>
+    </table>
   </mat-card-content>
 </mat-card>

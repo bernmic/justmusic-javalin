@@ -3,10 +3,7 @@ package de.b4.justmusic.service;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import de.b4.justmusic.entity.AbstractPlaylist;
-import de.b4.justmusic.entity.Album;
-import de.b4.justmusic.entity.Artist;
-import de.b4.justmusic.entity.Song;
+import de.b4.justmusic.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +16,7 @@ public class CacheService {
   private final static String ALBUM_MAP = "justmusic-album";
   private final static String ARTIST_MAP = "justmusic-artist";
   private final static String PLAYLIST_MAP = "justmusic-playlist";
+  private final static String USER_MAP = "justmusic-user";
 
   private static HazelcastInstance hazelcastInstance;
 
@@ -48,6 +46,13 @@ public class CacheService {
       initCacheService();
     }
     return hazelcastInstance.getMap(PLAYLIST_MAP);
+  }
+
+  public static Map<String,User> getUserMap() {
+    if (hazelcastInstance == null) {
+      initCacheService();
+    }
+    return hazelcastInstance.getMap(USER_MAP);
   }
 
   private CacheService() {}

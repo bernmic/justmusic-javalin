@@ -4,7 +4,7 @@ import {PlayerService} from "./player.service";
 import {Howl} from "howler";
 import {isNullOrUndefined} from "util";
 import {Subscription} from "rxjs/index";
-import {MatSlider, MatTable} from "@angular/material";
+import {MatSlider, MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-player',
@@ -28,22 +28,19 @@ export class PlayerComponent implements OnInit, AfterViewInit {
 
   @ViewChild("volumeCtrl")
   volumeControl: MatSlider ;
-  @ViewChild("songtable")
-  songtable: MatTable<any>;
 
-  constructor(private playerService: PlayerService) {
+  constructor(private playerService: PlayerService, public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
     this.songPlaySubscription = this.playerService.play$.subscribe(song => {
       this.playSong(song);
+      this.openSnackBar(`Now playing ${song.title} from ${song.artist.name}`, "Show");
     });
     this.songListSubscription = this.playerService.listchange$.subscribe(songs => {
       this.songs = songs;
-      this.songtable.renderRows();
     });
   }
-
 
   ngAfterViewInit(): void {
     this.volumeControl.input.subscribe(event => {
@@ -64,7 +61,7 @@ export class PlayerComponent implements OnInit, AfterViewInit {
   }
 
   isCurrentSong(song: Song): boolean {
-    return this.playerService.currentSong === song;
+    return this.currentSong === song;
   }
 
   playerReady(): boolean {
@@ -156,5 +153,11 @@ export class PlayerComponent implements OnInit, AfterViewInit {
       return Math.round(this.currentSong.duration * position / size);
     }
     return 0;
+  }
+
+  private openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }

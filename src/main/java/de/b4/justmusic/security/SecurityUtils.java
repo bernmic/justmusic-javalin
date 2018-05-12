@@ -3,8 +3,6 @@ package de.b4.justmusic.security;
 import de.b4.justmusic.service.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class SecurityUtils {
   private static Logger log = LoggerFactory.getLogger(SecurityUtils.class);
@@ -22,9 +21,7 @@ public class SecurityUtils {
       cipher.init(Cipher.ENCRYPT_MODE, getSecretKeySpec());
       byte[] encrypted = cipher.doFinal(in.getBytes());
 
-      BASE64Encoder base64Encoder = new BASE64Encoder();
-
-      return base64Encoder.encode(encrypted);
+      return Base64.getEncoder().encodeToString(encrypted);
     } catch (Exception e) {
       log.error("Could not encode text", e);
       e.printStackTrace();
@@ -34,8 +31,7 @@ public class SecurityUtils {
 
   public static String decodeString(String in) {
     try {
-      BASE64Decoder base64Decoder = new BASE64Decoder();
-      byte[] crypted = base64Decoder.decodeBuffer(in);
+      byte[] crypted = Base64.getDecoder().decode(in);
 
       Cipher cipher = Cipher.getInstance("AES");
       cipher.init(Cipher.DECRYPT_MODE, getSecretKeySpec());

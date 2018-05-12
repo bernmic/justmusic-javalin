@@ -3,6 +3,7 @@ package de.b4.justmusic;
 import de.b4.justmusic.controller.*;
 import de.b4.justmusic.service.LibraryService;
 import de.b4.justmusic.service.PlaylistService;
+import de.b4.justmusic.service.UserService;
 import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class Application {
             .port(7000)
             .start();
 
+    UserController.addRoutes(app);
     LoginController.addRoutes(app);
     SongController.addRoutes(app);
     AlbumController.addRoutes(app);
@@ -47,6 +49,7 @@ public class Application {
       ctx.json(result);
     });
 
+    UserService.getUserService().loadUsers();
     LibraryService libraryService = LibraryService.getLibraryService();
     libraryService.loadLibrary();
     PlaylistService.getPlaylistService().loadPlaylists();

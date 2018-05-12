@@ -19,6 +19,9 @@ export class AppComponent implements OnDestroy{
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    if (localStorage.getItem("theme") !== null) {
+      this.theme = localStorage.getItem("theme");
+    }
   }
 
   ngOnDestroy(): void {
@@ -31,5 +34,6 @@ export class AppComponent implements OnDestroy{
 
   setCurrentTheme(theme: string) {
     this.theme = theme;
+    localStorage.setItem("theme", theme);
   }
 }
