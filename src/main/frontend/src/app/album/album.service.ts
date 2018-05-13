@@ -5,10 +5,11 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Album, AlbumCollection} from "./album.model";
 import {SongService} from "../song/song.service";
+import {AuthService} from "../security/auth.service";
 
 @Injectable()
 export class AlbumService {
-  constructor(private http: HttpClient, private songService: SongService) {
+  constructor(private http: HttpClient, private songService: SongService, private authService: AuthService) {
   }
 
   getAllAlbums(): Observable<AlbumCollection> {
@@ -24,6 +25,6 @@ export class AlbumService {
   }
 
   albumCoverUrl(album: Album): string {
-    return environment.restserver + "/api/album/" + album.albumId + "/cover";
+    return environment.restserver + "/api/album/" + album.albumId + "/cover?bearer=" + this.authService.getToken();
   }
 }

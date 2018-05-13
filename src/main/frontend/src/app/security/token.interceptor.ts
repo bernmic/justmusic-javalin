@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor, HttpErrorResponse
+  HttpInterceptor, HttpErrorResponse, HttpHeaders
 } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
@@ -19,15 +19,16 @@ export class TokenInterceptor implements HttpInterceptor {
 
     if (!request.url.endsWith("/token")) {
       request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${this.auth.getToken()}`
-        }
+        headers: new HttpHeaders({
+          'Authorization': `Bearer ${this.auth.getToken()}`
+        })
       });
     }
 
-    return next
-      .handle(request)
-      .pipe(catchError(response => {
+    console.log(request);
+    return next.handle(request).pipe(
+      catchError(response => {
+        console.log("Catched error");
         if (response instanceof HttpErrorResponse) {
           if (response.status === 401) {
             this.router.navigate(["/login"/*, {message: "Token not found or invalid."}*/]);

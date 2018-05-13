@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.b4.justmusic.entity.AbstractCollection;
 import de.b4.justmusic.entity.Album;
 import de.b4.justmusic.entity.Cover;
+import de.b4.justmusic.security.SecurityService;
 import de.b4.justmusic.service.LibraryService;
 import io.javalin.Handler;
 import io.javalin.Javalin;
@@ -17,7 +18,7 @@ public class AlbumController extends AbstractController {
   public static void addRoutes(Javalin app) {
     app.routes(() -> {
       path("api", () -> {
-        //before("*", SecurityService.checkToken);
+        before("*", SecurityService.checkToken);
         path("album", () -> {
           get("", AlbumController.getAll);
           post("", AlbumController.createAlbum);

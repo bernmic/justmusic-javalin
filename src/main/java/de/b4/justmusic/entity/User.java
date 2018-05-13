@@ -4,10 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User implements Serializable {
+  public final static String ROLE_USER = "user";
+  public final static String ROLE_ADMIN = "admin";
+
   private String username;
   private String password;
   private String roles;
@@ -55,5 +59,21 @@ public class User implements Serializable {
 
   public void setPlayQueue(List<Song> playQueue) {
     this.playQueue = playQueue;
+  }
+
+  @JsonIgnore
+  public boolean isAdmin() {
+    if (roles != null) {
+      return Arrays.asList(roles.split(",")).contains(ROLE_ADMIN);
+    }
+    return false;
+  }
+
+  @JsonIgnore
+  public boolean isUser() {
+    if (roles != null) {
+      return Arrays.asList(roles.split(",")).contains(ROLE_USER);
+    }
+    return false;
   }
 }

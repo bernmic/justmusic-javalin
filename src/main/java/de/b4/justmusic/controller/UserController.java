@@ -3,24 +3,27 @@ package de.b4.justmusic.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.b4.justmusic.entity.AbstractCollection;
 import de.b4.justmusic.entity.User;
-import de.b4.justmusic.service.LibraryService;
+import de.b4.justmusic.security.SecurityService;
 import de.b4.justmusic.service.UserService;
 import io.javalin.Handler;
 import io.javalin.Javalin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.javalin.ApiBuilder.*;
 
 public class UserController extends AbstractController {
+  private static Logger log = LoggerFactory.getLogger(UserController.class);
 
   public static void addRoutes(Javalin app) {
     app.routes(() -> {
       path("api", () -> {
-        //before("*", SecurityService.checkToken);
+        before("*", SecurityService.checkToken);
         path("user", () -> {
           get("", UserController.getAll);
           post("", UserController.createUser);
           put("", UserController.updateUser);
-          get(":id", UserController.getById);
+          get(":username", UserController.getById);
           delete("", UserController.deleteUser);
         });
       });
@@ -28,7 +31,11 @@ public class UserController extends AbstractController {
   }
 
   public static Handler getAll = ctx -> {
-    // todo: only possible if admin or user himself
+    User loggedInUser = ctx.attribute("user");
+    if (!loggedInUser.isAdmin()) {
+      ctx.status(401);
+      return;
+    }
     AbstractCollection.Paging paging = createPagingObject(ctx.queryParamMap());
     if (paging.getSort() == null) {
       paging.setSort("username");
@@ -37,16 +44,23 @@ public class UserController extends AbstractController {
   };
 
   public static Handler getById = ctx -> {
-    User user = UserService.getUserService().getUser(ctx.param("id"));
-    if (user != null) {
+    User loggedInUser = ctx.attribute("user");
+    User user = UserService.getUserService().getUser(ctx.param("username"));
+    if (user != null && user.getUsername().equals(loggedInUser.getUsername()) || loggedInUser.isAdmin()) {
+      user.setPassword(null);
       ctx.json(user);
     }
     else {
-      ctx.status(404);
+      ctx.status(401);
     }
   };
 
   public static Handler createUser = ctx -> {
+    User loggedInUser = ctx.attribute("user");
+    if (!loggedInUser.isAdmin()) {
+      ctx.status(401);
+      return;
+    }
     ObjectMapper mapper = new ObjectMapper();
     User user = mapper.readValue(ctx.body(), User.class);
     if (UserService.getUserService().createUser(user) == true) {
@@ -59,6 +73,11 @@ public class UserController extends AbstractController {
   };
 
   public static Handler updateUser = ctx -> {
+    User loggedInUser = ctx.attribute("user");
+    if (!loggedInUser.isAdmin()) {
+      ctx.status(401);
+      return;
+    }
     ObjectMapper mapper = new ObjectMapper();
     User user = mapper.readValue(ctx.body(), User.class);
     if (UserService.getUserService().updateUser(user) == true) {
@@ -71,6 +90,11 @@ public class UserController extends AbstractController {
   };
 
   public static Handler deleteUser = ctx -> {
+    User loggedInUser = ctx.attribute("user");
+    if (!loggedInUser.isAdmin()) {
+      ctx.status(401);
+      return;
+    }
     ObjectMapper mapper = new ObjectMapper();
     User user = mapper.readValue(ctx.body(), User.class);
     ctx.status(UserService.getUserService().deleteUser(user) ? 200 : 404);

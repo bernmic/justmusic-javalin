@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/index";
 import {environment} from "../../environments/environment";
 import {Playlist, PlaylistCollection} from "./playlist.model";
@@ -12,7 +12,10 @@ export class PlaylistService {
   constructor(private http: HttpClient, private songService: SongService) {}
 
   getPlaylists(): Observable<PlaylistCollection> {
-    return this.http.get<PlaylistCollection>(environment.restserver + "/api/playlist");
+    const headers = new HttpHeaders({
+      'x-klaus': 'fred'
+    });
+    return this.http.get<PlaylistCollection>(environment.restserver + "/api/playlist", {headers: headers});
   }
 
   getPlaylist(id: string): Observable<Playlist> {

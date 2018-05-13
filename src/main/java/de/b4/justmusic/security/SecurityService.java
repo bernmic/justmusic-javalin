@@ -63,17 +63,25 @@ public class SecurityService {
   };
 
   public static Handler checkToken = ctx -> {
-    log.info(ctx.path());
+    if (ctx.method().equalsIgnoreCase("OPTIONS")) {
+      return;
+    }
     String token = ctx.header("Authorization");
+    String bearer = ctx.queryParam("bearer");
     if (token == null || !token.startsWith("Bearer ")) {
-      throw new HaltException(401);
+      if (bearer == null) {
+        throw new HaltException(401);
+      }
+      token = "Bearer " + bearer;
     }
     try {
       Claims claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(token.substring("Bearer ".length())).getBody();
-      String user = claims.getSubject();
-      if (!"user".equals(user)) {
+      String username = claims.getSubject();
+      User user = UserService.getUserService().getUser(username);
+      if (user == null) {
         throw new HaltException(401, "Access denied");
       }
+      ctx.attribute("user", user);
     } catch (ExpiredJwtException e) {
       throw new HaltException(401, "Token expired");
     } catch (UnsupportedJwtException e) {

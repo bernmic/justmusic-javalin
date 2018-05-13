@@ -52,12 +52,12 @@ import {TokenInterceptor} from "./security/token.interceptor";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'playlist', pathMatch: 'full' },
-  { path: 'playlist', component: PlaylistComponent },
-  { path: 'playlist/:id', component: PlaylistDetailComponent },
-  { path: 'song', component: SongListComponent },
-  { path: 'song/:type/:id', component: SongListComponent },
-  { path: 'album', component: AlbumListComponent },
-  { path: 'artist', component: ArtistListComponent },
+  { path: 'playlist', component: PlaylistComponent, canActivate: [AuthGuardService] },
+  { path: 'playlist/:id', component: PlaylistDetailComponent, canActivate: [AuthGuardService] },
+  { path: 'song', component: SongListComponent, canActivate: [AuthGuardService] },
+  { path: 'song/:type/:id', component: SongListComponent, canActivate: [AuthGuardService] },
+  { path: 'album', component: AlbumListComponent, canActivate: [AuthGuardService] },
+  { path: 'artist', component: ArtistListComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent }
 ];
 

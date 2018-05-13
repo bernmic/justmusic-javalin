@@ -3,6 +3,7 @@ import {Subject} from "rxjs/index";
 import {Song} from "../song/song.model";
 import {isNullOrUndefined} from "util";
 import {environment} from "../../environments/environment";
+import {AuthService} from "../security/auth.service";
 
 @Injectable()
 export class PlayerService {
@@ -13,6 +14,8 @@ export class PlayerService {
 
   currentSong: Song;
   songlist: Song[] = [];
+
+  constructor(private authService: AuthService) {}
 
   playSong(song: Song) {
     this.currentSong = song;
@@ -63,10 +66,10 @@ export class PlayerService {
   }
 
   songCoverUrl(song: Song): string {
-    return environment.restserver + "/api/song/" + song.songId + "/cover";
+    return environment.restserver + "/api/song/" + song.songId + "/cover?bearer=" + this.authService.getToken();
   }
 
   songStreamUrl(song: Song): string {
-    return environment.restserver + "/api/song/" + song.songId + "/stream";
+    return environment.restserver + "/api/song/" + song.songId + "/stream?bearer=" + this.authService.getToken();
   }
 }
