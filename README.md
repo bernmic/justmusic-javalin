@@ -15,6 +15,8 @@ To build the frontend, Node / NPM is required. After that the Angular-CLI needs 
 >npm i -g @angular/cli
 
 Then go to the src/main/frondend folder and execute
+>npm i
+
 >ng build --prod
 
 This will build the frontend to the dist folder.
@@ -24,7 +26,7 @@ It needs Maven 3+ to build this app. Run `mvn package` to build the project. The
 
 ## Run
 It can be staret with
->java -jar target\justmusic-javalin-1.0-SNAPSHOT-jar-with-dependencies.jar
+>java -jar target/justmusic-javalin-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 and called from browser with url [http://localhost:7000](http://localhost:7000).
 JustMusic looks in $HOME/.jmj for its configuration. A file called *users.json* is expected there.
