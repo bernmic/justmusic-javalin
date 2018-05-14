@@ -14,6 +14,8 @@ import static io.javalin.ApiBuilder.*;
 
 public class UserController extends AbstractController {
   private static Logger log = LoggerFactory.getLogger(UserController.class);
+  private final static String PARAM_USERNAME = "username";
+  private final static String PARAM_THEME = "theme";
 
   public static void addRoutes(Javalin app) {
     app.routes(() -> {
@@ -25,6 +27,7 @@ public class UserController extends AbstractController {
           put("", UserController.updateUser);
           get(":username", UserController.getById);
           delete("", UserController.deleteUser);
+          post(":username/theme/:theme", UserController.setTheme);
         });
       });
     });
@@ -98,5 +101,18 @@ public class UserController extends AbstractController {
     ObjectMapper mapper = new ObjectMapper();
     User user = mapper.readValue(ctx.body(), User.class);
     ctx.status(UserService.getUserService().deleteUser(user) ? 200 : 404);
+  };
+
+  public static Handler setTheme = ctx -> {
+    User loggedInUser = ctx.attribute("user");
+    User user = UserService.getUserService().getUser(ctx.param("username"));
+    if (user != null && user.getUsername().equals(loggedInUser.getUsername()) || loggedInUser.isAdmin()) {
+      UserService.getUserService().setTheme(user, ctx.param("theme"));
+      user.setPassword(null);
+      ctx.json(user);
+    }
+    else {
+      ctx.status(401);
+    }
   };
 }

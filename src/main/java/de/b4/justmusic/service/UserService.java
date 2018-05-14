@@ -90,4 +90,11 @@ public class UserService {
     saveUsers();
     return true;
   }
+
+  public User setTheme(User user, String theme) {
+    user.setTheme(theme);
+    CacheService.getUserMap().put(user.getUsername(), user);
+    saveUsers();
+    return user;
+  }
 }
