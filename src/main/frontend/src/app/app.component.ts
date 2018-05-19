@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {Router} from '@angular/router';
+import {AuthService} from "./security/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,11 @@ export class AppComponent implements OnDestroy{
 
   theme = 'indigo-pink-light';
 
-  constructor(private router: Router, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -35,5 +40,14 @@ export class AppComponent implements OnDestroy{
   setCurrentTheme(theme: string) {
     this.theme = theme;
     localStorage.setItem("theme", theme);
+  }
+
+  private query: string;
+
+  search($event) {
+    if ($event.charCode === 13) {
+      console.log("Search for " + this.query);
+      this.router.navigate(["/search", this.query]);
+    }
   }
 }

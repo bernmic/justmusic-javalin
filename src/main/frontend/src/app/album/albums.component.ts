@@ -1,26 +1,34 @@
-import {ChangeDetectorRef, Component, Input, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Album} from "./album.model";
 import {AlbumService} from "./album.service";
+import {Sort} from "@angular/material";
 import {MediaMatcher} from "@angular/cdk/layout";
 import {isNullOrUndefined} from "util";
 
 @Component({
-  selector: 'app-album-list',
-  templateUrl: './album-list.component.html',
-  styleUrls: ['./album-list.component.scss']
+  selector: 'app-albums',
+  templateUrl: './albums.component.html',
+  styleUrls: ['./albums.component.scss']
 })
-export class AlbumListComponent implements OnDestroy {
+export class AlbumsComponent implements OnInit, OnDestroy {
 
   mobileQuery: MediaQueryList;
+
   private _mobileQueryListener: () => void;
 
-  @Input()
   albums: Album[];
 
   constructor(private albumService: AlbumService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    console.log(media);
+  }
+
+  ngOnInit() {
+    this.albumService.getAllAlbums().subscribe(albums => {
+      this.albums = albums.albums;
+    });
   }
 
   ngOnDestroy(): void {

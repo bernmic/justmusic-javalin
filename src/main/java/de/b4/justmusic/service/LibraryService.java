@@ -125,6 +125,15 @@ public class LibraryService {
     return null;
   }
 
+  public SearchResult search(String query) {
+    SearchResult searchResult = new SearchResult();
+    searchResult.setQuery(query);
+    searchResult.setSongs(CacheService.getSongMap().values().parallelStream().filter(s -> s.getTitle().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList()));
+    searchResult.setAlbums(CacheService.getAlbumMap().values().parallelStream().filter(a -> a.getTitle().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList()));
+    searchResult.setArtists(CacheService.getArtistMap().values().parallelStream().filter(a -> a.getName().toLowerCase().contains(query.toLowerCase())).collect(Collectors.toList()));
+    return searchResult;
+  }
+
   /*
   ALBUM
    */

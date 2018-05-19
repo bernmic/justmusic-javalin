@@ -5,10 +5,11 @@ import {RouterModule, Routes} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {
+  MatBadgeModule,
   MatButtonModule,
   MatCardModule,
   MatDatepickerModule,
-  MatDialogModule,
+  MatDialogModule, MatExpansionModule,
   MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
@@ -33,7 +34,7 @@ import {AppComponent} from './app.component';
 import {PlaylistComponent} from './playlist/playlist.component';
 import {PlaylistService} from "./playlist/playlist.service";
 import {PlaylistDetailComponent} from "./playlist/playlist-detail.component";
-import {SongComponent} from './song/song.component';
+import {SongsComponent} from './song/songs.component';
 import {AlbumListComponent} from './album/album-list.component';
 import {ArtistListComponent} from './artist/artist-list.component';
 import {SongService} from "./song/song.service";
@@ -49,6 +50,10 @@ import {LoginComponent} from "./security/login.component";
 import {AuthService} from "./security/auth.service";
 import {AuthGuardService} from "./security/auth-guard.service";
 import {TokenInterceptor} from "./security/token.interceptor";
+import { SearchComponent } from './search/search.component';
+import {SearchService} from "./search/search.service";
+import {ArtistsComponent} from "./artist/artists.component";
+import {AlbumsComponent} from "./album/albums.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'playlist', pathMatch: 'full' },
@@ -56,8 +61,9 @@ export const routes: Routes = [
   { path: 'playlist/:id', component: PlaylistDetailComponent, canActivate: [AuthGuardService] },
   { path: 'song', component: SongListComponent, canActivate: [AuthGuardService] },
   { path: 'song/:type/:id', component: SongListComponent, canActivate: [AuthGuardService] },
-  { path: 'album', component: AlbumListComponent, canActivate: [AuthGuardService] },
-  { path: 'artist', component: ArtistListComponent, canActivate: [AuthGuardService] },
+  { path: 'album', component: AlbumsComponent, canActivate: [AuthGuardService] },
+  { path: 'artist', component: ArtistsComponent, canActivate: [AuthGuardService] },
+  { path: 'search/:query', component: SearchComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent }
 ];
 
@@ -66,15 +72,18 @@ export const routes: Routes = [
     AppComponent,
     PlaylistComponent,
     PlaylistDetailComponent,
-    SongComponent,
+    SongsComponent,
     SongListComponent,
+    AlbumsComponent,
     AlbumListComponent,
     AlbumCoverComponent,
+    ArtistsComponent,
     ArtistListComponent,
     PlayerComponent,
     LoginComponent,
     DurationPipe,
-    UnixdatePipe
+    UnixdatePipe,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -83,10 +92,12 @@ export const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     LayoutModule,
+    MatBadgeModule,
     MatButtonModule,
     MatCardModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
@@ -112,6 +123,7 @@ export const routes: Routes = [
     PlayerService,
     AlbumService,
     ArtistService,
+    SearchService,
     AuthService,
     AuthGuardService,
     {

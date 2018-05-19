@@ -30,6 +30,7 @@ public class Application {
     AlbumController.addRoutes(app);
     ArtistController.addRoutes(app);
     PlaylistController.addRoutes(app);
+    SearchController.addRoutes(app);
 
     app.error(404, ctx -> {
       if (!ctx.uri().startsWith("/api/")) {

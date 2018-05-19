@@ -1,20 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {ArtistService} from "./artist.service";
+import {Component, Input} from '@angular/core';
 import {Artist} from "./artist.model";
 
 @Component({
-  selector: 'app-artist',
+  selector: 'app-artist-list',
   templateUrl: './artist-list.component.html',
   styleUrls: ['./artist-list.component.scss']
 })
-export class ArtistListComponent implements OnInit {
+export class ArtistListComponent {
 
+  @Input()
   artists: Artist[];
-
-  constructor(private artistService: ArtistService) { }
-
-  ngOnInit() {
-    this.artistService.getAllArtists().subscribe(artists => this.artists = artists.artists);
-  }
-
 }
