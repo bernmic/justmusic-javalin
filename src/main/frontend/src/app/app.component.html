@@ -4,7 +4,7 @@
       <button mat-icon-button (click)="lsnav.toggle()"><mat-icon>menu</mat-icon></button>
       <h1 class="app-name">JustMusic</h1>
       <span class="navbar-spacer"></span>
-      <form *ngIf="authService.isLoggedIn | async">
+      <form *ngIf="isLoggedIn() | async">
         <mat-form-field appearance="outline" class="search-field">
           <input name="q" [(ngModel)]="query" matInput class="search-input" type="search" placeholder="Search" (keypress)="search($event)">
           <mat-icon matSuffix>search</mat-icon>

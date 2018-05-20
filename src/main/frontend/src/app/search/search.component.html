@@ -1,11 +1,11 @@
 <mat-accordion>
-  <mat-expansion-panel *ngIf="hasSongs()">
+  <mat-expansion-panel *ngIf="hasSongs()" [expanded]="searchResult?.songs?.length>0">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Songs
       </mat-panel-title>
       <mat-panel-description>
-        {{searchResult?.songs.length}} Songs containing {{searchResult?.query}}
+        {{searchResult?.songs.length}} Songs containing {{searchResult?.query}} <span *ngIf="searchResult?.limited">&nbsp;(limited)</span>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <app-song-list [songs]="searchResult.songs" [embedded]="true"></app-song-list>

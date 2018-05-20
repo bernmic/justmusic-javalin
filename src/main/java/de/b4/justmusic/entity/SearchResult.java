@@ -8,6 +8,15 @@ public class SearchResult implements Serializable {
   private List<Album> albums;
   private List<Artist> artists;
   private String query;
+  private boolean limited = false;
+
+  public boolean isLimited() {
+    return limited;
+  }
+
+  public void setLimited(boolean limited) {
+    this.limited = limited;
+  }
 
   public List<Song> getSongs() {
     return songs;

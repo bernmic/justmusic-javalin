@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {Router} from '@angular/router';
 import {AuthService} from "./security/auth.service";
+import {Observable} from "rxjs/index";
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,10 @@ export class AppComponent implements OnDestroy{
   }
 
   private query: string;
+
+  isLoggedIn(): Observable<boolean> {
+    return this.authService.isLoggedIn;
+  }
 
   search($event) {
     if ($event.charCode === 13) {
