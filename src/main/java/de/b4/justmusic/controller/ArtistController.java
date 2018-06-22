@@ -3,7 +3,7 @@ package de.b4.justmusic.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.b4.justmusic.entity.AbstractCollection;
 import de.b4.justmusic.entity.Artist;
-import de.b4.justmusic.service.LibraryService;
+import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 
@@ -32,11 +32,11 @@ public class ArtistController extends AbstractController {
     if (paging.getSort() == null) {
       paging.setSort("name");
     }
-    ctx.json(LibraryService.getLibraryService().getArtists(paging));
+    ctx.json(ServiceRegistry.getLibraryService().getArtists(paging));
   };
 
   public static Handler getById = ctx -> {
-    Artist artist = LibraryService.getLibraryService().getArtistById(ctx.param("id"));
+    Artist artist = ServiceRegistry.getLibraryService().getArtistById(ctx.param("id"));
     if (artist != null) {
       ctx.json(artist);
     }
@@ -48,7 +48,7 @@ public class ArtistController extends AbstractController {
   public static Handler createArtist = ctx -> {
     ObjectMapper mapper = new ObjectMapper();
     Artist artist = mapper.readValue(ctx.body(), Artist.class);
-    artist = LibraryService.getLibraryService().createArtist(artist);
+    artist = ServiceRegistry.getLibraryService().createArtist(artist);
     ctx.status(201);
     ctx.json(artist);
   };
@@ -56,7 +56,7 @@ public class ArtistController extends AbstractController {
   public static Handler updateArtist = ctx -> {
     ObjectMapper mapper = new ObjectMapper();
     Artist artist = mapper.readValue(ctx.body(), Artist.class);
-    artist = LibraryService.getLibraryService().updateArtist(artist);
+    artist = ServiceRegistry.getLibraryService().updateArtist(artist);
     if (artist != null) {
       ctx.status(200);
       ctx.json(artist);
@@ -68,7 +68,7 @@ public class ArtistController extends AbstractController {
 
   public static Handler deleteById = ctx -> {
     String id = ctx.param("id");
-    ctx.status(LibraryService.getLibraryService().deleteArtistById(id) ? 200 : 404);
+    ctx.status(ServiceRegistry.getLibraryService().deleteArtistById(id) ? 200 : 404);
   };
 
   public static Handler getSongs = ctx -> {
@@ -77,6 +77,6 @@ public class ArtistController extends AbstractController {
     if (paging.getSort() == null) {
       paging.setSort("title");
     }
-    ctx.json(LibraryService.getLibraryService().getSongsForArtist(id, paging));
+    ctx.json(ServiceRegistry.getLibraryService().getSongsForArtist(id, paging));
   };
 }

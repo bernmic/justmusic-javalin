@@ -2,7 +2,7 @@ package de.b4.justmusic.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.b4.justmusic.service.ConfigService;
-import de.b4.justmusic.service.LibraryService;
+import de.b4.justmusic.service.ServiceRegistry;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class DynamicPlaylist extends AbstractPlaylist {
       return songLists.get(this.getPlaylistId());
     }
     try {
-      engine.put("libraryService", LibraryService.getLibraryService());
+      engine.put("libraryService", ServiceRegistry.getLibraryService());
       engine.eval(getScript());
       Invocable invocable = (Invocable) engine;
       List<Song> songs = (List<Song>)invocable.invokeFunction("getSongs");

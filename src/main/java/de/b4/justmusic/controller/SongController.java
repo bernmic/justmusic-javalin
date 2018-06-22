@@ -3,7 +3,7 @@ package de.b4.justmusic.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.b4.justmusic.entity.Cover;
 import de.b4.justmusic.entity.Song;
-import de.b4.justmusic.service.LibraryService;
+import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 
@@ -32,11 +32,11 @@ public class SongController extends AbstractController {
   }
 
   public static Handler getAll = ctx -> {
-    ctx.json(LibraryService.getLibraryService().getSongs(createPagingObject(ctx.queryParamMap())));
+    ctx.json(ServiceRegistry.getLibraryService().getSongs(createPagingObject(ctx.queryParamMap())));
   };
 
   public static Handler getById = ctx -> {
-    Song song = LibraryService.getLibraryService().getSongById(ctx.param("id"));
+    Song song = ServiceRegistry.getLibraryService().getSongById(ctx.param("id"));
     if (song != null) {
       ctx.json(song);
     }
@@ -48,7 +48,7 @@ public class SongController extends AbstractController {
   public static Handler createSong = ctx -> {
     ObjectMapper mapper = new ObjectMapper();
     Song song = mapper.readValue(ctx.body(), Song.class);
-    song = LibraryService.getLibraryService().createSong(song);
+    song = ServiceRegistry.getLibraryService().createSong(song);
     ctx.status(201);
     ctx.json(song);
   };
@@ -56,7 +56,7 @@ public class SongController extends AbstractController {
   public static Handler updateSong = ctx -> {
     ObjectMapper mapper = new ObjectMapper();
     Song song = mapper.readValue(ctx.body(), Song.class);
-    song = LibraryService.getLibraryService().updateSong(song);
+    song = ServiceRegistry.getLibraryService().updateSong(song);
     if (song != null) {
       ctx.status(200);
       ctx.json(song);
@@ -68,17 +68,17 @@ public class SongController extends AbstractController {
 
   public static Handler deleteById = ctx -> {
     String id = ctx.param("id");
-    ctx.status(LibraryService.getLibraryService().deleteSongById(id) ? 200 : 404);
+    ctx.status(ServiceRegistry.getLibraryService().deleteSongById(id) ? 200 : 404);
   };
 
   public static Handler cover = ctx -> {
     String id = ctx.param("id");
-    Song song = LibraryService.getLibraryService().getSongById(id);
+    Song song = ServiceRegistry.getLibraryService().getSongById(id);
     if (song == null) {
       ctx.status(404);
     }
     else {
-      Cover cover = LibraryService.getLibraryService().getCoverForSong(song);
+      Cover cover = ServiceRegistry.getLibraryService().getCoverForSong(song);
       ctx.contentType(cover.getMimetype());
       ctx.status(200);
       ctx.result(new ByteArrayInputStream(cover.getImage()));
@@ -87,7 +87,7 @@ public class SongController extends AbstractController {
 
   public static Handler stream = ctx -> {
     String id = ctx.param("id");
-    Song song = LibraryService.getLibraryService().getSongById(id);
+    Song song = ServiceRegistry.getLibraryService().getSongById(id);
     if (song == null) {
       ctx.status(404);
     }

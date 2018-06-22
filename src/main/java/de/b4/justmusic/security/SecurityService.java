@@ -1,8 +1,7 @@
 package de.b4.justmusic.security;
 
-import de.b4.justmusic.Application;
 import de.b4.justmusic.entity.User;
-import de.b4.justmusic.service.UserService;
+import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.HaltException;
 import io.javalin.Handler;
 import io.javalin.security.Role;
@@ -43,7 +42,7 @@ public class SecurityService {
     String username = ctx.basicAuthCredentials() != null ? ctx.basicAuthCredentials().getUsername() : "";
     String password = ctx.basicAuthCredentials() != null ? ctx.basicAuthCredentials().getPassword() : "";
 
-    User user = UserService.getUserService().getUser(username);
+    User user = ServiceRegistry.getUserService().getUser(username);
     if (user != null && user.getPassword().equals(password)) {
       Date expiration = new Date();
       expiration.setTime(expiration.getTime() + TOKEN_TIMEOUT);
@@ -77,7 +76,7 @@ public class SecurityService {
     try {
       Claims claims = Jwts.parser().setSigningKey(KEY).parseClaimsJws(token.substring("Bearer ".length())).getBody();
       String username = claims.getSubject();
-      User user = UserService.getUserService().getUser(username);
+      User user = ServiceRegistry.getUserService().getUser(username);
       if (user == null) {
         throw new HaltException(401, "Access denied");
       }

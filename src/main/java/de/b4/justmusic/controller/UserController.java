@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.b4.justmusic.entity.AbstractCollection;
 import de.b4.justmusic.entity.User;
 import de.b4.justmusic.security.SecurityService;
-import de.b4.justmusic.service.UserService;
+import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 import org.slf4j.Logger;
@@ -43,12 +43,12 @@ public class UserController extends AbstractController {
     if (paging.getSort() == null) {
       paging.setSort("username");
     }
-    ctx.json(UserService.getUserService().getUsers());
+    ctx.json(ServiceRegistry.getUserService().getUsers());
   };
 
   public static Handler getById = ctx -> {
     User loggedInUser = ctx.attribute("user");
-    User user = UserService.getUserService().getUser(ctx.param("username"));
+    User user = ServiceRegistry.getUserService().getUser(ctx.param("username"));
     if (user != null && user.getUsername().equals(loggedInUser.getUsername()) || loggedInUser.isAdmin()) {
       user.setPassword(null);
       ctx.json(user);
@@ -66,7 +66,7 @@ public class UserController extends AbstractController {
     }
     ObjectMapper mapper = new ObjectMapper();
     User user = mapper.readValue(ctx.body(), User.class);
-    if (UserService.getUserService().createUser(user) == true) {
+    if (ServiceRegistry.getUserService().createUser(user) == true) {
       ctx.status(201);
       ctx.json(user);
     }
@@ -83,7 +83,7 @@ public class UserController extends AbstractController {
     }
     ObjectMapper mapper = new ObjectMapper();
     User user = mapper.readValue(ctx.body(), User.class);
-    if (UserService.getUserService().updateUser(user) == true) {
+    if (ServiceRegistry.getUserService().updateUser(user) == true) {
       ctx.status(200);
       ctx.json(user);
     }
@@ -100,14 +100,14 @@ public class UserController extends AbstractController {
     }
     ObjectMapper mapper = new ObjectMapper();
     User user = mapper.readValue(ctx.body(), User.class);
-    ctx.status(UserService.getUserService().deleteUser(user) ? 200 : 404);
+    ctx.status(ServiceRegistry.getUserService().deleteUser(user) ? 200 : 404);
   };
 
   public static Handler setTheme = ctx -> {
     User loggedInUser = ctx.attribute("user");
-    User user = UserService.getUserService().getUser(ctx.param("username"));
+    User user = ServiceRegistry.getUserService().getUser(ctx.param("username"));
     if (user != null && user.getUsername().equals(loggedInUser.getUsername()) || loggedInUser.isAdmin()) {
-      UserService.getUserService().setTheme(user, ctx.param("theme"));
+      ServiceRegistry.getUserService().setTheme(user, ctx.param("theme"));
       user.setPassword(null);
       ctx.json(user);
     }

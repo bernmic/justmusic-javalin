@@ -5,7 +5,7 @@ import de.b4.justmusic.entity.AbstractCollection;
 import de.b4.justmusic.entity.Album;
 import de.b4.justmusic.entity.Cover;
 import de.b4.justmusic.security.SecurityService;
-import de.b4.justmusic.service.LibraryService;
+import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 
@@ -37,11 +37,11 @@ public class AlbumController extends AbstractController {
     if (paging.getSort() == null) {
       paging.setSort("title");
     }
-    ctx.json(LibraryService.getLibraryService().getAlbums(paging));
+    ctx.json(ServiceRegistry.getLibraryService().getAlbums(paging));
   };
 
   public static Handler getById = ctx -> {
-    Album album = LibraryService.getLibraryService().getAlbumById(ctx.param("id"));
+    Album album = ServiceRegistry.getLibraryService().getAlbumById(ctx.param("id"));
     if (album != null) {
       ctx.json(album);
     }
@@ -53,7 +53,7 @@ public class AlbumController extends AbstractController {
   public static Handler createAlbum = ctx -> {
     ObjectMapper mapper = new ObjectMapper();
     Album album = mapper.readValue(ctx.body(), Album.class);
-    album = LibraryService.getLibraryService().createAlbum(album);
+    album = ServiceRegistry.getLibraryService().createAlbum(album);
     ctx.status(201);
     ctx.json(album);
   };
@@ -61,7 +61,7 @@ public class AlbumController extends AbstractController {
   public static Handler updateAlbum = ctx -> {
     ObjectMapper mapper = new ObjectMapper();
     Album album = mapper.readValue(ctx.body(), Album.class);
-    album = LibraryService.getLibraryService().updateAlbum(album);
+    album = ServiceRegistry.getLibraryService().updateAlbum(album);
     if (album != null) {
       ctx.status(200);
       ctx.json(album);
@@ -73,7 +73,7 @@ public class AlbumController extends AbstractController {
 
   public static Handler deleteById = ctx -> {
     String id = ctx.param("id");
-    ctx.status(LibraryService.getLibraryService().deleteAlbumById(id) ? 200 : 404);
+    ctx.status(ServiceRegistry.getLibraryService().deleteAlbumById(id) ? 200 : 404);
   };
 
   public static Handler getSongs = ctx -> {
@@ -83,17 +83,17 @@ public class AlbumController extends AbstractController {
       paging.setSort("track");
     }
 
-    ctx.json(LibraryService.getLibraryService().getSongsForAlbum(id, paging));
+    ctx.json(ServiceRegistry.getLibraryService().getSongsForAlbum(id, paging));
   };
 
   public static Handler cover = ctx -> {
     String id = ctx.param("id");
-    Album album = LibraryService.getLibraryService().getAlbumById(id);
+    Album album = ServiceRegistry.getLibraryService().getAlbumById(id);
     if (album == null) {
       ctx.status(404);
     }
     else {
-      Cover cover = LibraryService.getLibraryService().getCoverForAlbum(album);
+      Cover cover = ServiceRegistry.getLibraryService().getCoverForAlbum(album);
       ctx.contentType(cover.getMimetype());
       ctx.status(200);
       ctx.result(new ByteArrayInputStream(cover.getImage()));

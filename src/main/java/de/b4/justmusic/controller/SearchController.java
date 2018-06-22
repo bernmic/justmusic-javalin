@@ -1,6 +1,6 @@
 package de.b4.justmusic.controller;
 
-import de.b4.justmusic.service.LibraryService;
+import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 
@@ -21,6 +21,6 @@ public class SearchController extends AbstractController {
   }
 
   public static Handler search = ctx -> {
-    ctx.json(LibraryService.getLibraryService().search(ctx.queryParam("q")));
+    ctx.json(ServiceRegistry.getLibraryService().search(ctx.queryParam("q")));
   };
 }

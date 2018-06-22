@@ -20,18 +20,9 @@ import java.util.stream.Collectors;
 public class PlaylistService {
   private final static Logger log = LoggerFactory.getLogger(PlaylistService.class);
 
-  private static PlaylistService playlistService;
-
   private List<AbstractPlaylist> playlists;
 
-  private PlaylistService() {}
-
-  public static PlaylistService getPlaylistService() {
-    if (playlistService == null) {
-      playlistService = new PlaylistService();
-    }
-    return playlistService;
-  }
+  PlaylistService() {}
 
   public PlaylistCollection getPlaylists() {
     PlaylistCollection playlistCollection = new PlaylistCollection();
@@ -113,7 +104,7 @@ public class PlaylistService {
       if (lines.size() > 0) {
         if (lines.get(0).equals("#EXTM3U")) {
           for (int i = 1; i < lines.size(); i += 2) {
-            Song song = LibraryService.getLibraryService().findSongByPath(lines.get(i + 1));
+            Song song = ServiceRegistry.getLibraryService().findSongByPath(lines.get(i + 1));
             if (song != null) {
               playlist.addSong(song);
             }
@@ -121,7 +112,7 @@ public class PlaylistService {
         }
         else {
           for (String line : lines) {
-            Song song = LibraryService.getLibraryService().findSongByPath(line);
+            Song song = ServiceRegistry.getLibraryService().findSongByPath(line);
             if (song != null) {
               playlist.addSong(song);
             }

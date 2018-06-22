@@ -3,7 +3,7 @@ package de.b4.justmusic.controller;
 import de.b4.justmusic.entity.AbstractCollection;
 import de.b4.justmusic.entity.AbstractPlaylist;
 import de.b4.justmusic.entity.SongCollection;
-import de.b4.justmusic.service.PlaylistService;
+import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 
@@ -26,11 +26,11 @@ public class PlaylistController {
   }
 
   public static Handler getAll = ctx -> {
-    ctx.json(PlaylistService.getPlaylistService().getPlaylists());
+    ctx.json(ServiceRegistry.getPlaylistService().getPlaylists());
   };
 
   public static Handler getById = ctx -> {
-    AbstractPlaylist playlist = PlaylistService.getPlaylistService().getPlaylistById(ctx.param("id"));
+    AbstractPlaylist playlist = ServiceRegistry.getPlaylistService().getPlaylistById(ctx.param("id"));
     if (playlist != null) {
       ctx.json(playlist);
     }
@@ -41,7 +41,7 @@ public class PlaylistController {
 
   public static Handler getSongs = ctx -> {
     String id = ctx.param("id");
-    AbstractPlaylist playlist = PlaylistService.getPlaylistService().getPlaylistById(id);
+    AbstractPlaylist playlist = ServiceRegistry.getPlaylistService().getPlaylistById(id);
     if (playlist != null) {
       SongCollection songCollection = new SongCollection();
       songCollection.setSongs(playlist.getSongs());

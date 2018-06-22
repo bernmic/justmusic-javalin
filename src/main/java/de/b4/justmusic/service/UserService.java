@@ -14,16 +14,7 @@ import java.util.List;
 public class UserService {
   private final static Logger log = LoggerFactory.getLogger(UserService.class);
 
-  private static UserService userService;
-
-  private UserService() {}
-
-  public static UserService getUserService() {
-    if (userService == null) {
-      userService = new UserService();
-    }
-    return userService;
-  }
+  UserService() {}
 
   public void loadUsers() {
     File file = new File(ConfigService.getConfig().getUsersFile());

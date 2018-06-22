@@ -2,8 +2,7 @@ package de.b4.justmusic;
 
 import de.b4.justmusic.controller.*;
 import de.b4.justmusic.service.LibraryService;
-import de.b4.justmusic.service.PlaylistService;
-import de.b4.justmusic.service.UserService;
+import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,10 +49,10 @@ public class Application {
       ctx.json(result);
     });
 
-    UserService.getUserService().loadUsers();
-    LibraryService libraryService = LibraryService.getLibraryService();
+    ServiceRegistry.getUserService().loadUsers();
+    LibraryService libraryService = ServiceRegistry.getLibraryService();
     libraryService.loadLibrary();
-    PlaylistService.getPlaylistService().loadPlaylists();
+    ServiceRegistry.getPlaylistService().loadPlaylists();
     CompletableFuture.supplyAsync(() -> libraryService.scanMedia());
     //LibraryService.getLibraryService().scanMedia();
   }
