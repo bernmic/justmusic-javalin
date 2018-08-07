@@ -1,4 +1,5 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
+/backend/src/main/resources/static
 
 # compiled output
 /dist
@@ -8,6 +9,7 @@
 
 # dependencies
 /node_modules
+/node
 
 # IDEs and editors
 /.idea
