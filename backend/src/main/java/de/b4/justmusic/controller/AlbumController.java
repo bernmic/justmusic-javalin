@@ -11,7 +11,7 @@ import io.javalin.Javalin;
 
 import java.io.ByteArrayInputStream;
 
-import static io.javalin.ApiBuilder.*;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class AlbumController extends AbstractController {
 
@@ -41,7 +41,7 @@ public class AlbumController extends AbstractController {
   };
 
   public static Handler getById = ctx -> {
-    Album album = ServiceRegistry.getLibraryService().getAlbumById(ctx.param("id"));
+    Album album = ServiceRegistry.getLibraryService().getAlbumById(ctx.pathParam("id"));
     if (album != null) {
       ctx.json(album);
     }
@@ -72,12 +72,12 @@ public class AlbumController extends AbstractController {
   };
 
   public static Handler deleteById = ctx -> {
-    String id = ctx.param("id");
+    String id = ctx.pathParam("id");
     ctx.status(ServiceRegistry.getLibraryService().deleteAlbumById(id) ? 200 : 404);
   };
 
   public static Handler getSongs = ctx -> {
-    String id = ctx.param("id");
+    String id = ctx.pathParam("id");
     AbstractCollection.Paging paging = createPagingObject(ctx.queryParamMap());
     if (paging.getSort() == null) {
       paging.setSort("track");
@@ -87,7 +87,7 @@ public class AlbumController extends AbstractController {
   };
 
   public static Handler cover = ctx -> {
-    String id = ctx.param("id");
+    String id = ctx.pathParam("id");
     Album album = ServiceRegistry.getLibraryService().getAlbumById(id);
     if (album == null) {
       ctx.status(404);

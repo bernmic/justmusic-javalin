@@ -32,7 +32,7 @@ public class Application {
     SearchController.addRoutes(app);
 
     app.error(404, ctx -> {
-      if (!ctx.uri().startsWith("/api/")) {
+      if (!ctx.path().startsWith("/api/")) {
         ctx.redirect("/");
       }
       else {

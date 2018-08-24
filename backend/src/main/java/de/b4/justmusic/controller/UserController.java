@@ -10,7 +10,7 @@ import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static io.javalin.ApiBuilder.*;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class UserController extends AbstractController {
   private static Logger log = LoggerFactory.getLogger(UserController.class);
@@ -48,7 +48,7 @@ public class UserController extends AbstractController {
 
   public static Handler getById = ctx -> {
     User loggedInUser = ctx.attribute("user");
-    User user = ServiceRegistry.getUserService().getUser(ctx.param("username"));
+    User user = ServiceRegistry.getUserService().getUser(ctx.pathParam("username"));
     if (user != null && user.getUsername().equals(loggedInUser.getUsername()) || loggedInUser.isAdmin()) {
       user.setPassword(null);
       ctx.json(user);
@@ -105,9 +105,9 @@ public class UserController extends AbstractController {
 
   public static Handler setTheme = ctx -> {
     User loggedInUser = ctx.attribute("user");
-    User user = ServiceRegistry.getUserService().getUser(ctx.param("username"));
+    User user = ServiceRegistry.getUserService().getUser(ctx.pathParam("username"));
     if (user != null && user.getUsername().equals(loggedInUser.getUsername()) || loggedInUser.isAdmin()) {
-      ServiceRegistry.getUserService().setTheme(user, ctx.param("theme"));
+      ServiceRegistry.getUserService().setTheme(user, ctx.pathParam("theme"));
       user.setPassword(null);
       ctx.json(user);
     }

@@ -548,6 +548,9 @@ public class LibraryServiceImpl implements LibraryService {
 
   private List<Song> createSongCollection(Collection<Song> songs, AbstractCollection.Paging paging) {
     List<Song> songList = new ArrayList<>(songs);
+    if (paging == null) {
+      paging = new AbstractCollection.Paging();
+    }
     if (paging.getSort() != null) {
         boolean desc = paging.getDirection() != null && "asc".equalsIgnoreCase(paging.getDirection());
         if (paging.getSort().equals("title")) {

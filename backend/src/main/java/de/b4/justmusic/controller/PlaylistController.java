@@ -7,8 +7,8 @@ import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 
-import static io.javalin.ApiBuilder.get;
-import static io.javalin.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
 
 public class PlaylistController {
 
@@ -30,7 +30,7 @@ public class PlaylistController {
   };
 
   public static Handler getById = ctx -> {
-    AbstractPlaylist playlist = ServiceRegistry.getPlaylistService().getPlaylistById(ctx.param("id"));
+    AbstractPlaylist playlist = ServiceRegistry.getPlaylistService().getPlaylistById(ctx.pathParam("id"));
     if (playlist != null) {
       ctx.json(playlist);
     }
@@ -40,7 +40,7 @@ public class PlaylistController {
   };
 
   public static Handler getSongs = ctx -> {
-    String id = ctx.param("id");
+    String id = ctx.pathParam("id");
     AbstractPlaylist playlist = ServiceRegistry.getPlaylistService().getPlaylistById(id);
     if (playlist != null) {
       SongCollection songCollection = new SongCollection();

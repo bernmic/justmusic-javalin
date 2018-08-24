@@ -23,10 +23,10 @@ export class AuthService {
   }
 
   login(username: string, password: string){
-    if (username !== '' && password != '' ) {
+    if (username !== '' && password !== '' ) {
       let headers = new HttpHeaders();
       headers = headers.append("Authorization", "Basic " + btoa(username + ":" + password));
-      //headers = headers.append("Content-Type", "application/x-www-form-urlencoded");
+      // headers = headers.append("Content-Type", "application/x-www-form-urlencoded");
       this.http.get(environment.restserver + "/token", {headers: headers}).subscribe(response => {
         this.token = response['token'];
         console.log("Successfully loged in with token " + this.token);

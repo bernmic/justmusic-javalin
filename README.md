@@ -8,7 +8,7 @@ Frontend is a Single Page Application build with Angular 6 and Angular Material.
 
 ## Build
 
-Frontend need to be built first. 
+Frontend need to be built first. This will be done with the parent pom.xml.
 
 ### Frontend
 To build the frontend, Node / NPM is required. After that the Angular-CLI needs to be installed.

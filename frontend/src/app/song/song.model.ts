@@ -16,7 +16,7 @@ export class Song {
     public genre: string,
     public added: number,
     public yearPublished: string,
-    public vbr: boolean,
+    public cbrvbr: string,
     public rating: number,
     public filedate: number
   ) {}

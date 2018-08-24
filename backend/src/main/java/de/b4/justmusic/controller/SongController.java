@@ -10,7 +10,7 @@ import io.javalin.Javalin;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 
-import static io.javalin.ApiBuilder.*;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class SongController extends AbstractController {
 
@@ -36,7 +36,7 @@ public class SongController extends AbstractController {
   };
 
   public static Handler getById = ctx -> {
-    Song song = ServiceRegistry.getLibraryService().getSongById(ctx.param("id"));
+    Song song = ServiceRegistry.getLibraryService().getSongById(ctx.pathParam("id"));
     if (song != null) {
       ctx.json(song);
     }
@@ -67,12 +67,12 @@ public class SongController extends AbstractController {
   };
 
   public static Handler deleteById = ctx -> {
-    String id = ctx.param("id");
+    String id = ctx.pathParam("id");
     ctx.status(ServiceRegistry.getLibraryService().deleteSongById(id) ? 200 : 404);
   };
 
   public static Handler cover = ctx -> {
-    String id = ctx.param("id");
+    String id = ctx.pathParam("id");
     Song song = ServiceRegistry.getLibraryService().getSongById(id);
     if (song == null) {
       ctx.status(404);
@@ -86,7 +86,7 @@ public class SongController extends AbstractController {
   };
 
   public static Handler stream = ctx -> {
-    String id = ctx.param("id");
+    String id = ctx.pathParam("id");
     Song song = ServiceRegistry.getLibraryService().getSongById(id);
     if (song == null) {
       ctx.status(404);

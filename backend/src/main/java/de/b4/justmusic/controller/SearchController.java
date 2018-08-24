@@ -4,8 +4,8 @@ import de.b4.justmusic.service.ServiceRegistry;
 import io.javalin.Handler;
 import io.javalin.Javalin;
 
-import static io.javalin.ApiBuilder.get;
-import static io.javalin.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.path;
 
 public class SearchController extends AbstractController {
 

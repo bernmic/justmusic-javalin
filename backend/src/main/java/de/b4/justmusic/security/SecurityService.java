@@ -2,8 +2,8 @@ package de.b4.justmusic.security;
 
 import de.b4.justmusic.entity.User;
 import de.b4.justmusic.service.ServiceRegistry;
-import io.javalin.HaltException;
 import io.javalin.Handler;
+import io.javalin.UnauthorizedResponse;
 import io.javalin.security.Role;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -69,7 +69,7 @@ public class SecurityService {
     String bearer = ctx.queryParam("bearer");
     if (token == null || !token.startsWith("Bearer ")) {
       if (bearer == null) {
-        throw new HaltException(401);
+        throw new UnauthorizedResponse();
       }
       token = "Bearer " + bearer;
     }
@@ -78,19 +78,19 @@ public class SecurityService {
       String username = claims.getSubject();
       User user = ServiceRegistry.getUserService().getUser(username);
       if (user == null) {
-        throw new HaltException(401, "Access denied");
+        throw new UnauthorizedResponse("Access denied");
       }
       ctx.attribute("user", user);
     } catch (ExpiredJwtException e) {
-      throw new HaltException(401, "Token expired");
+      throw new UnauthorizedResponse("Token expired");
     } catch (UnsupportedJwtException e) {
-      throw new HaltException(401);
+      throw new UnauthorizedResponse();
     } catch (MalformedJwtException e) {
-      throw new HaltException(401);
+      throw new UnauthorizedResponse();
     } catch (SignatureException e) {
-      throw new HaltException(401);
+      throw new UnauthorizedResponse();
     } catch (IllegalArgumentException e) {
-      throw new HaltException(401);
+      throw new UnauthorizedResponse();
     }
   };
 
