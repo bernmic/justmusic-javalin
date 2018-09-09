@@ -4,6 +4,18 @@
   <mat-card-subtitle>{{playlist?.filename}}</mat-card-subtitle>
 </mat-card-header>
 <mat-card-content>
-    <p *ngFor="let song of songs" (click)="playSong(song)">{{song.title}}</p>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let song of songs" (click)="playSong(song)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{song.title}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{song.artist?.name}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      {{song.album.title}}
+    </mat-expansion-panel>
+  </mat-accordion>
 </mat-card-content>
 </mat-card>

@@ -9,7 +9,8 @@ import {
   MatButtonModule,
   MatCardModule,
   MatDatepickerModule,
-  MatDialogModule, MatExpansionModule,
+  MatDialogModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatGridListModule,
   MatIconModule,
@@ -54,6 +55,7 @@ import { SearchComponent } from './search/search.component';
 import {SearchService} from "./search/search.service";
 import {ArtistsComponent} from "./artist/artists.component";
 import {AlbumsComponent} from "./album/albums.component";
+import {PlaylistSelectDialogComponent} from "./song/playlist-select-dialog.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'playlist', pathMatch: 'full' },
@@ -72,6 +74,7 @@ export const routes: Routes = [
     AppComponent,
     PlaylistComponent,
     PlaylistDetailComponent,
+    PlaylistSelectDialogComponent,
     SongsComponent,
     SongListComponent,
     AlbumsComponent,
@@ -132,6 +135,7 @@ export const routes: Routes = [
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [PlaylistSelectDialogComponent]
 })
 export class AppModule { }

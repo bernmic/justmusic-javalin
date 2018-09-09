@@ -2,7 +2,7 @@ import {Album} from "../album/album.model";
 import {Paging} from "../shared/paging.model";
 
 export class Playlist {
-  constructor(public id: string, public name: string, public filename: string) {}
+  constructor(public playlistId: string, public name: string, public filename: string) {}
 }
 
 export class PlaylistCollection {

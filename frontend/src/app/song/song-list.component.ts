@@ -3,7 +3,9 @@ import {Song, SongCollection} from "./song.model";
 import {SongService} from "./song.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PlayerService} from "../player/player.service";
-import {MatPaginator, MatSort, MatTableDataSource, Sort} from "@angular/material";
+import {MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource, Sort} from "@angular/material";
+import {PlaylistSelectDialogComponent} from "./playlist-select-dialog.component";
+import {PlaylistService} from "../playlist/playlist.service";
 
 @Component({
   selector: 'app-song-list',
@@ -25,6 +27,7 @@ export class SongListComponent implements OnInit {
   ];
 
   _songs: Song[] = [];
+  headline = "";
   dataSource = new MatTableDataSource<Song>(this._songs);
 
   @Input()
@@ -36,7 +39,9 @@ export class SongListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private songService: SongService,
-    private playerService: PlayerService) {
+    private playerService: PlayerService,
+    private playlistService: PlaylistService,
+    private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -65,10 +70,11 @@ export class SongListComponent implements OnInit {
 
   setSongs(songCollection: SongCollection) {
     this._songs = songCollection.songs;
+    this.headline = songCollection.description;
     this.dataSource = new MatTableDataSource(this._songs);
     this.dataSource.sortingDataAccessor = (obj, property) => this.getProperty(obj, property);
     this.dataSource.sort = this.sort;
-    //this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
   }
 
   @Input()
@@ -77,7 +83,7 @@ export class SongListComponent implements OnInit {
   }
 
   set songs(songs: Song[]) {
-    this.setSongs(new SongCollection(songs, null));
+    this.setSongs(new SongCollection(songs, "", null));
   }
 
   playSong(song: Song) {
@@ -90,6 +96,21 @@ export class SongListComponent implements OnInit {
 
   queueSongs() {
     this.songs.forEach(song => this.playerService.addSong(song));
+  }
+
+  addSongToPlaylist(song: Song) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    const dialog = this.dialog.open(PlaylistSelectDialogComponent, dialogConfig);
+    dialog.afterClosed().subscribe(v => {
+      if (v !== undefined) {
+        console.log("add song with id=" + song.songId + " to playlist " + v);
+        this.playlistService.addSongsToPlaylist(v, [song.songId]).subscribe(r => console.log(r));
+      }
+    });
   }
 
   getProperty = (obj, path) => (

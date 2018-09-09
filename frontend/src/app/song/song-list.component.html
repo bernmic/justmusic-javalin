@@ -1,11 +1,23 @@
-<mat-table matSort #songtable [dataSource]="dataSource">
+<mat-toolbar>
+  <span>{{headline}}</span>
+</mat-toolbar><mat-table matSort #songtable [dataSource]="dataSource">
   <ng-container matColumnDef="command">
     <mat-header-cell *matHeaderCellDef>
-      <mat-icon class="only-on-hover" color="accent" (click)="queueSongs()">queue</mat-icon>
+      <mat-icon class="only-on-hover" color="accent" (click)="queueSongs()">queue_music</mat-icon>
     </mat-header-cell>
     <mat-cell *matCellDef="let song">
-      <mat-icon class="only-on-hover" color="accent" (click)="playSong(song)">play_arrow</mat-icon>
-      <mat-icon class="only-on-hover" color="accent" (click)="queueSong(song)">queue</mat-icon>
+      <mat-icon
+        class="only-on-hover"
+        color="accent"
+        (click)="playSong(song)">play_arrow</mat-icon>
+      <mat-icon
+        class="only-on-hover"
+        color="accent"
+        (click)="queueSong(song)">queue_music</mat-icon>
+      <mat-icon
+        class="only-on-hover"
+        color="accent"
+        (click)="addSongToPlaylist(song)">playlist_add</mat-icon>
     </mat-cell>
   </ng-container>
   <ng-container *ngFor="let column of columnDefs" [matColumnDef]="column.name">
