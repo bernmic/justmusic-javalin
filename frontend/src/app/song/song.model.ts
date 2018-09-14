@@ -23,5 +23,5 @@ export class Song {
 }
 
 export class SongCollection {
-  constructor(public songs: Song[], public description, public paging: Paging) {}
+  constructor(public songs: Song[], public description, public paging: Paging, public total: number) {}
 }

@@ -1,6 +1,12 @@
 <mat-toolbar>
   <span>{{headline}}</span>
-</mat-toolbar><mat-table matSort #songtable [dataSource]="dataSource">
+</mat-toolbar>
+<!--
+<div class="spinner-container" *ngIf="dataSource.loading$ | async">
+  <mat-spinner></mat-spinner>
+</div>
+-->
+<mat-table matSort #songtable [dataSource]="dataSource">
   <ng-container matColumnDef="command">
     <mat-header-cell *matHeaderCellDef>
       <mat-icon class="only-on-hover" color="accent" (click)="queueSongs()">queue_music</mat-icon>
@@ -32,10 +38,10 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
-<!--
+
 <mat-paginator #paginator
-               [pageSize]="10"
-               [pageSizeOptions]="[5, 10, 20]"
+               [length]="total"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions"
                [showFirstLastButtons]="true">
 </mat-paginator>
--->
