@@ -20,10 +20,6 @@ export class AlbumService {
     return this.http.get<Album>(environment.restserver + "/api/album/" + id);
   }
 
-  getSongs(id: string): Observable<SongCollection> {
-    return this.songService.getSongs("/api/album/" + id + "/songs");
-  }
-
   albumCoverUrl(album: Album): string {
     return environment.restserver + "/api/album/" + album.albumId + "/cover?bearer=" + this.authService.getToken();
   }

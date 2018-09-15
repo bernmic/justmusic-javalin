@@ -19,10 +19,6 @@ export class ArtistService {
     return this.http.get<Artist>(environment.restserver + "/api/artist/" + id);
   }
 
-  getSongs(id: string): Observable<SongCollection> {
-    return this.songService.getSongs("/api/artist/" + id + "/songs");
-  }
-
   artistCoverUrl(artist: Artist): string {
     return environment.restserver + "/api/artist/" + artist.artistId + "/cover";
   }

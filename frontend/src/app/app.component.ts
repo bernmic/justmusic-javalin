@@ -43,16 +43,7 @@ export class AppComponent implements OnDestroy{
     localStorage.setItem("theme", theme);
   }
 
-  private query: string;
-
   isLoggedIn(): Observable<boolean> {
     return this.authService.isLoggedIn;
-  }
-
-  search($event) {
-    if ($event.charCode === 13) {
-      console.log("Search for " + this.query);
-      this.router.navigate(["/search", this.query]);
-    }
   }
 }

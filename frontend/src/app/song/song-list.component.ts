@@ -1,15 +1,15 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from "@angular/core";
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from "@angular/core";
 import {Song, SongCollection} from "./song.model";
 import {SongService} from "./song.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PlayerService} from "../player/player.service";
-import {MatDialog, MatDialogConfig, MatPaginator, MatSort, Sort} from "@angular/material";
+import {MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTable} from "@angular/material";
 import {PlaylistSelectDialogComponent} from "./playlist-select-dialog.component";
 import {PlaylistService} from "../playlist/playlist.service";
 import {SongDataSource} from "./song.datasource";
 import {Paging} from "../shared/paging.model";
-import {tap} from "rxjs/operators";
-import {merge} from "rxjs";
+import {debounceTime, distinctUntilChanged, tap} from "rxjs/operators";
+import {fromEvent, merge} from "rxjs";
 
 @Component({
   selector: 'app-song-list',
@@ -19,6 +19,7 @@ import {merge} from "rxjs";
 export class SongListComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('input') input: ElementRef;
 
   columnDefs = [
     {name: 'title', title: 'Title'},
@@ -30,7 +31,6 @@ export class SongListComponent implements AfterViewInit, OnInit {
     {name: 'duration', title: 'Duration'}*/
   ];
 
-  _songs: Song[] = [];
   headline = "";
   dataSource: SongDataSource;
 
@@ -56,7 +56,7 @@ export class SongListComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem("pageSize") !== null) {
+    if (localStorage.getItem("pageSize")) {
       this.pageSize = +localStorage.getItem("pageSize");
     }
     this.dataSource = new SongDataSource(this.songService);
@@ -72,17 +72,29 @@ export class SongListComponent implements AfterViewInit, OnInit {
         } else if (this.kind === "artist") {
           sortField = "album.name";
         }
-        this.dataSource.loadSongs(this.kind, this.anyId, new Paging(0, this.pageSize, sortField, "asc"));
+        this.dataSource.loadSongs(this.kind, this.anyId, "", new Paging(0, this.pageSize, sortField, "asc"));
         this.dataSource.songTotalSubject.subscribe(total => {
           this.total = total;
-          console.log("New Total: " + this.total);
         });
+        this.dataSource.songDescriptionSubject.subscribe(s => this.headline = s);
       });
     }
   }
 
   ngAfterViewInit() {
-// reset the paginator after sorting
+    // server-side search
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadSongsPage();
+        })
+      )
+      .subscribe();
+
+    // reset the paginator after sorting
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
     merge(this.sort.sortChange, this.paginator.page)
@@ -94,25 +106,11 @@ export class SongListComponent implements AfterViewInit, OnInit {
 
   loadSongsPage() {
     localStorage.setItem("pageSize", "" + this.paginator.pageSize);
-    this.dataSource.loadSongs(this.kind, this.anyId, new Paging(
+    this.dataSource.loadSongs(this.kind, this.anyId, this.input.nativeElement.value, new Paging(
       this.paginator.pageIndex,
       this.paginator.pageSize,
       this.sort.active,
       this.sort.direction));
-  }
-
-  setSongs(songCollection: SongCollection) {
-    this._songs = songCollection.songs;
-    this.headline = songCollection.description;
-  }
-
-  @Input()
-  get songs(): Song[] {
-    return this._songs;
-  }
-
-  set songs(songs: Song[]) {
-    this.setSongs(new SongCollection(songs, "", null, songs.length));
   }
 
   playSong(song: Song) {
@@ -124,7 +122,7 @@ export class SongListComponent implements AfterViewInit, OnInit {
   }
 
   queueSongs() {
-    this.songs.forEach(song => this.playerService.addSong(song));
+    this.dataSource.songs.forEach(song => this.playerService.addSong(song));
   }
 
   addSongToPlaylist(song: Song) {
@@ -136,7 +134,6 @@ export class SongListComponent implements AfterViewInit, OnInit {
     const dialog = this.dialog.open(PlaylistSelectDialogComponent, dialogConfig);
     dialog.afterClosed().subscribe(v => {
       if (v !== undefined) {
-        console.log("add song with id=" + song.songId + " to playlist " + v);
         this.playlistService.addSongsToPlaylist(v, [song.songId]).subscribe(r => console.log(r));
       }
     });

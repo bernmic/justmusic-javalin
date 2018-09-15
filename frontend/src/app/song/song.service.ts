@@ -11,12 +11,28 @@ export class SongService {
   constructor(private http: HttpClient) {
   }
 
-  getSongs(uri: string, paging?: Paging): Observable<SongCollection> {
-    return this.http.get<SongCollection>(environment.restserver + uri + this.getPagingForUrl(paging));
+  getSongs(uri: string, filter: string, paging?: Paging): Observable<SongCollection> {
+    let parameter =  this.getPagingForUrl(paging);
+    if (!isNullOrUndefined(filter) && filter !== "") {
+      if (parameter === "") {
+        parameter = "?filter=" + filter;
+      } else {
+        parameter += "&filter=" + filter;
+      }
+    }
+    return this.http.get<SongCollection>(environment.restserver + uri + parameter);
   }
 
-  getAllSongs(paging?: Paging): Observable<SongCollection> {
-    return this.http.get<SongCollection>(environment.restserver + "/api/song" + this.getPagingForUrl(paging));
+  getAllSongs(filter: string, paging?: Paging): Observable<SongCollection> {
+    let parameter =  this.getPagingForUrl(paging);
+    if (!isNullOrUndefined(filter) && filter !== "") {
+      if (parameter === "") {
+        parameter = "?filter=" + filter;
+      } else {
+        parameter += "&filter=" + filter;
+      }
+    }
+    return this.http.get<SongCollection>(environment.restserver + "/api/song" + parameter);
   }
 
   getAllSongsOfAlbum(id: string, paging?: Paging): Observable<SongCollection> {

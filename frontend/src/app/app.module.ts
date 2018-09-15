@@ -51,8 +51,6 @@ import {LoginComponent} from "./security/login.component";
 import {AuthService} from "./security/auth.service";
 import {AuthGuardService} from "./security/auth-guard.service";
 import {TokenInterceptor} from "./security/token.interceptor";
-import { SearchComponent } from './search/search.component';
-import {SearchService} from "./search/search.service";
 import {ArtistsComponent} from "./artist/artists.component";
 import {AlbumsComponent} from "./album/albums.component";
 import {PlaylistSelectDialogComponent} from "./song/playlist-select-dialog.component";
@@ -65,7 +63,6 @@ export const routes: Routes = [
   { path: 'song/:type/:id', component: SongListComponent, canActivate: [AuthGuardService] },
   { path: 'album', component: AlbumsComponent, canActivate: [AuthGuardService] },
   { path: 'artist', component: ArtistsComponent, canActivate: [AuthGuardService] },
-  { path: 'search/:query', component: SearchComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent }
 ];
 
@@ -85,8 +82,7 @@ export const routes: Routes = [
     PlayerComponent,
     LoginComponent,
     DurationPipe,
-    UnixdatePipe,
-    SearchComponent
+    UnixdatePipe
   ],
   imports: [
     BrowserModule,
@@ -126,7 +122,6 @@ export const routes: Routes = [
     PlayerService,
     AlbumService,
     ArtistService,
-    SearchService,
     AuthService,
     AuthGuardService,
     {
