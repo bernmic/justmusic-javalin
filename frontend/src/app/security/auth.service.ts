@@ -29,7 +29,7 @@ export class AuthService {
       // headers = headers.append("Content-Type", "application/x-www-form-urlencoded");
       this.http.get(environment.restserver + "/token", {headers: headers}).subscribe(response => {
         this.token = response['token'];
-        console.log("Successfully loged in with token " + this.token);
+        console.log("Successfully logged in with token " + this.token);
         this.loggedIn.next(true);
         this.router.navigate(['/']);
       }, error => {

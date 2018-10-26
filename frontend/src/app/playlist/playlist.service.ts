@@ -25,4 +25,14 @@ export class PlaylistService {
   addSongsToPlaylist(playlistId: string, songIds: string[]): Observable<any> {
     return this.http.post(environment.restserver + "/api/playlist/" + playlistId + "/songs", songIds);
   }
+
+  savePlaylist(playlist: Playlist) : Observable<Playlist> {
+    console.log("Save: " + playlist.playlistId + "=" + playlist.name);
+    let result: Observable<any>;
+    if (playlist.playlistId === null || playlist.playlistId === "") {
+      return this.http.post<Playlist>(environment.restserver + "/api/playlist", playlist);
+    } else {
+      return this.http.put<Playlist>(environment.restserver + "/api/playlist", playlist);
+    }
+  }
 }

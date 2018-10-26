@@ -1,21 +1,12 @@
-<mat-card>
-<mat-card-header>
-  <mat-card-title>{{playlist?.name}}</mat-card-title>
-  <mat-card-subtitle>{{playlist?.filename}}</mat-card-subtitle>
-</mat-card-header>
-<mat-card-content>
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let song of songs" (click)="playSong(song)">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{song.title}}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{song.artist?.name}}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      {{song.album.title}}
-    </mat-expansion-panel>
-  </mat-accordion>
-</mat-card-content>
-</mat-card>
+<form class="edit-playlist-form">
+  <mat-form-field class="full-width" hideRequiredMarker>
+    <input matInput placeholder="Name" #name required>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Query" #query>
+  </mat-form-field>
+
+  <button mat-raised-button (click)="save()">Save</button>
+  <a mat-button routerLink="/playlist">Cancel</a>
+</form>

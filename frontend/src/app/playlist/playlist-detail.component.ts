@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PlaylistService} from "./playlist.service";
 import {Playlist} from "./playlist.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Song, SongCollection} from "../song/song.model";
-import {PlayerService} from "../player/player.service";
-import {SongService} from "../song/song.service";
 
 @Component({
   selector: 'app-playlist-detail',
@@ -13,27 +10,35 @@ import {SongService} from "../song/song.service";
 })
 export class PlaylistDetailComponent implements OnInit {
   playlist: Playlist;
-  songs: Song[];
+
+  @ViewChild('name') nameInput: ElementRef;
+  @ViewChild('query') queryInput: ElementRef;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private playlistService: PlaylistService,
-    private playerService: PlayerService,
-    private songService: SongService) { }
+    private playlistService: PlaylistService) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
+      if (params.get('id') === null || params.get('id') === "new") {
+        this.playlist = new Playlist("", "", "");
+        return;
+      }
       this.playlistService.getPlaylist(params.get('id')).subscribe((playlist: Playlist) => {
         this.playlist = playlist;
-      });
-      this.songService.getAllSongsOfPlaylist(params.get('id')).subscribe((songs: SongCollection) => {
-        this.songs = songs.songs;
+        this.nameInput.nativeElement.value = this.playlist.name;
+        this.queryInput.nativeElement.value = this.playlist.query;
       });
     });
   }
 
-  playSong(song: Song) {
-    this.playerService.playSong(song);
+  save() {
+    this.playlist.name = this.nameInput.nativeElement.value;
+    this.playlist.query = this.queryInput.nativeElement.value;
+    this.playlistService.savePlaylist(this.playlist).subscribe(p => {
+      this.router.navigate(["/playlist"]);
+    });
   }
+
 }

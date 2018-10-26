@@ -1,3 +1,15 @@
+<a mat-button routerLink="/playlist/new"><mat-icon>add</mat-icon>Add playlist</a>
 <mat-list>
-  <a mat-list-item *ngFor="let playlist of playlists" routerLink="/song/playlist/{{playlist.playlistId}}">{{playlist.name}}</a>
+  <mat-list-item *ngFor="let playlist of playlists">
+    <a routerLink="/song/playlist/{{playlist.playlistId}}">
+      <mat-icon mat-list-icon color="accent">list</mat-icon>
+    </a>
+    <a routerLink="/playlist/{{playlist.playlistId}}">
+      <mat-icon mat-list-icon color="accent">edit</mat-icon>
+    </a>
+    <a routerLink="/song/playlist/{{playlist.playlistId}}">
+      <mat-icon mat-list-icon color="accent">delete</mat-icon>
+    </a>
+    <h4>&nbsp;{{playlist.name}}</h4>
+  </mat-list-item>
 </mat-list>
