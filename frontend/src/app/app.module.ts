@@ -6,7 +6,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {
   MatBadgeModule,
-  MatButtonModule,
+  MatButtonModule, MatButtonToggleModule,
   MatCardModule,
   MatDatepickerModule,
   MatDialogModule,
@@ -54,6 +54,8 @@ import {TokenInterceptor} from "./security/token.interceptor";
 import {ArtistsComponent} from "./artist/artists.component";
 import {AlbumsComponent} from "./album/albums.component";
 import {PlaylistSelectDialogComponent} from "./song/playlist-select-dialog.component";
+import {OverviewComponent} from "./overview/overview.component";
+import {OverviewService} from "./overview/overview.service";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'playlist', pathMatch: 'full' },
@@ -63,6 +65,7 @@ export const routes: Routes = [
   { path: 'song/:type/:id', component: SongListComponent, canActivate: [AuthGuardService] },
   { path: 'album', component: AlbumsComponent, canActivate: [AuthGuardService] },
   { path: 'artist', component: ArtistsComponent, canActivate: [AuthGuardService] },
+  { path: 'overview', component: OverviewComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent }
 ];
 
@@ -81,6 +84,7 @@ export const routes: Routes = [
     ArtistListComponent,
     PlayerComponent,
     LoginComponent,
+    OverviewComponent,
     DurationPipe,
     UnixdatePipe
   ],
@@ -93,6 +97,7 @@ export const routes: Routes = [
     LayoutModule,
     MatBadgeModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatDatepickerModule,
     MatDialogModule,
@@ -122,6 +127,7 @@ export const routes: Routes = [
     PlayerService,
     AlbumService,
     ArtistService,
+    OverviewService,
     AuthService,
     AuthGuardService,
     {

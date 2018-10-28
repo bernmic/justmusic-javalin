@@ -1,3 +1,16 @@
-<mat-list role="list">
-  <mat-list-item role="listitem" *ngFor="let artist of artists" routerLink="/song/artist/{{artist.artistId}}">{{artist.name}}</mat-list-item>
-</mat-list>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let artist of artists" (opened)="panelOpened(artist.artistId)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{artist.name}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-action-list *ngIf="albums !== undefined">
+      <a routerLink="/song/artist/{{artist.artistId}}" mat-list-item class="artist-link"> Show all songs </a>
+      <a routerLink="/song/album/{{album.albumId}}" mat-list-item class="album-link" *ngFor="let album of albums">
+        <img [src]="coverUrl(album)" width="20" height="20">
+        &nbsp; {{album.title}}
+      </a>
+    </mat-action-list>
+  </mat-expansion-panel>
+</mat-accordion>

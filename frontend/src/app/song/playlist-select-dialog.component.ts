@@ -18,7 +18,7 @@ export class PlaylistSelectDialogComponent  implements OnInit {
     private dialogRef: MatDialogRef<PlaylistSelectDialogComponent>) {}
 
   ngOnInit() {
-    this.playlistService.getPlaylists().subscribe(playlistCollection => this.playlists = playlistCollection.playlists);
+    this.playlistService.getStaticPlaylists().subscribe(playlistCollection => this.playlists = playlistCollection.playlists);
   }
 
   save() {

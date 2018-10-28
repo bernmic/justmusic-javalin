@@ -7,7 +7,7 @@
     <a routerLink="/playlist/{{playlist.playlistId}}">
       <mat-icon mat-list-icon color="accent">edit</mat-icon>
     </a>
-    <a routerLink="/song/playlist/{{playlist.playlistId}}">
+    <a href="" (click)="delete(playlist.playlistId)">
       <mat-icon mat-list-icon color="accent">delete</mat-icon>
     </a>
     <h4>&nbsp;{{playlist.name}}</h4>

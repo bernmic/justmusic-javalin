@@ -18,14 +18,14 @@
       <mat-sidenav [opened]="!mobileQuery.matches" #lsnav [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
         <mat-nav-list>
-          <mat-list-item routerLinkActive="active" [routerLink]="['/playlist']" >
+          <mat-list-item routerLinkActive="active" [routerLink]="['/overview']" class="mat-primary">
             <mat-icon matListIcon color="accent">dashboard</mat-icon>
             <span i18n="@@navDashboard">Overview</span>
           </mat-list-item>
 
           <mat-divider> </mat-divider>
 
-          <mat-list-item routerLinkActive="active" routerLink="playlist" class="mat-primary">
+          <mat-list-item routerLinkActive="active" routerLink="playlist">
             <mat-icon matListIcon color="accent">featured_play_list</mat-icon>
             <span i18n="@@navText">Playlists</span>
           </mat-list-item>

@@ -1,7 +1,8 @@
 <div class="song">
   <span [style.visibility]="kind!=='' ? 'visible' : 'hidden'">{{headline}}</span>
   <mat-form-field [style.visibility]="kind==='' ? 'visible' : 'hidden'">
-    <input matInput placeholder="Search songs" #input>
+    <mat-placeholder><mat-icon>search</mat-icon></mat-placeholder>
+    <input matInput #input>
   </mat-form-field>
 
   <div class="spinner-container" *ngIf="dataSource.loading$ | async">

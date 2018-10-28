@@ -1,12 +1,20 @@
+<mat-button-toggle-group class="full-width" name="type" aria-label="Playlisttype" *ngIf="isNew()">
+  <mat-button-toggle value="query" [checked]="kind===KIND_QUERY" (click)="kind=KIND_QUERY">With query</mat-button-toggle>
+  <mat-button-toggle value="empty" [checked]="kind===KIND_EMPTY" (click)="kind=KIND_EMPTY">Manual selection</mat-button-toggle>
+</mat-button-toggle-group>
 <form class="edit-playlist-form">
   <mat-form-field class="full-width" hideRequiredMarker>
     <input matInput placeholder="Name" #name required>
   </mat-form-field>
 
-  <mat-form-field class="full-width">
+  <mat-form-field class="full-width" *ngIf="kind===KIND_QUERY">
     <input matInput placeholder="Query" #query>
   </mat-form-field>
 
-  <button mat-raised-button (click)="save()">Save</button>
-  <a mat-button routerLink="/playlist">Cancel</a>
+  <button mat-flat-button color="primary" (click)="save()">
+    <mat-icon>done</mat-icon>
+    Save
+  </button>
+  <a mat-flat-button routerLink="/playlist"><mat-icon>undo</mat-icon>Cancel</a>
+  <a mat-flat-button color="accent" routerLink="/song/playlist/{{playlist?.playlistId}}" *ngIf="!isNew()"><mat-icon>list</mat-icon>Show</a>
 </form>

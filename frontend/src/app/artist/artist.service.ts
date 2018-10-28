@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/index";
-import {SongCollection} from "../song/song.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {SongService} from "../song/song.service";
 import {Artist, ArtistCollection} from "./artist.model";
+import {Album} from "../album/album.model";
 
 @Injectable()
 export class ArtistService {
@@ -17,6 +17,10 @@ export class ArtistService {
 
   getArtist(id: string): Observable<Artist> {
     return this.http.get<Artist>(environment.restserver + "/api/artist/" + id);
+  }
+
+  getAlbumsForArtist(id: string): Observable<Album[]> {
+    return this.http.get<Album[]>(environment.restserver + "/api/artist/" + id + "/albums");
   }
 
   artistCoverUrl(artist: Artist): string {

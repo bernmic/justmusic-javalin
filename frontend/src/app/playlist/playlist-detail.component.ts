@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {PlaylistService} from "./playlist.service";
 import {Playlist} from "./playlist.model";
 import {ActivatedRoute, Router} from "@angular/router";
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-playlist-detail',
@@ -13,6 +14,11 @@ export class PlaylistDetailComponent implements OnInit {
 
   @ViewChild('name') nameInput: ElementRef;
   @ViewChild('query') queryInput: ElementRef;
+
+  KIND_QUERY = "query";
+  KIND_EMPTY = "empty";
+
+  kind = this.KIND_QUERY;
 
   constructor(
     private router: Router,
@@ -28,17 +34,32 @@ export class PlaylistDetailComponent implements OnInit {
       this.playlistService.getPlaylist(params.get('id')).subscribe((playlist: Playlist) => {
         this.playlist = playlist;
         this.nameInput.nativeElement.value = this.playlist.name;
-        this.queryInput.nativeElement.value = this.playlist.query;
+        if (!isNullOrUndefined(this.queryInput)) {
+          this.queryInput.nativeElement.value = this.playlist.query;
+          this.kind = this.KIND_QUERY;
+        } else {
+          this.kind = this.KIND_EMPTY;
+        }
       });
     });
   }
 
   save() {
     this.playlist.name = this.nameInput.nativeElement.value;
-    this.playlist.query = this.queryInput.nativeElement.value;
-    this.playlistService.savePlaylist(this.playlist).subscribe(p => {
+    if (!isNullOrUndefined(this.queryInput)) {
+      this.playlist.query = this.queryInput.nativeElement.value;
+    }
+    this.playlistService.savePlaylist(this.playlist).subscribe(() => {
       this.router.navigate(["/playlist"]);
     });
   }
 
+  isNew(): boolean {
+    if (!isNullOrUndefined(this.playlist)) {
+      if (this.playlist.playlistId === "" || this.playlist.playlistId === null) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
