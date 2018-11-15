@@ -6,5 +6,5 @@ export class Artist {
 }
 
 export class ArtistCollection {
-  constructor(public artists: Artist[], public paging: Paging, total: number) {}
+  constructor(public artists: Artist[], public paging: Paging, public total: number) {}
 }

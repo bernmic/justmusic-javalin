@@ -6,7 +6,8 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {
   MatBadgeModule,
-  MatButtonModule, MatButtonToggleModule,
+  MatButtonModule,
+  MatButtonToggleModule,
   MatCardModule,
   MatDatepickerModule,
   MatDialogModule,
@@ -19,7 +20,8 @@ import {
   MatMenuModule,
   MatNativeDateModule,
   MatPaginatorModule,
-  MatProgressBarModule, MatProgressSpinnerModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
@@ -56,6 +58,7 @@ import {AlbumsComponent} from "./album/albums.component";
 import {PlaylistSelectDialogComponent} from "./song/playlist-select-dialog.component";
 import {OverviewComponent} from "./overview/overview.component";
 import {OverviewService} from "./overview/overview.service";
+import {ScrollingModule} from "@angular/cdk/scrolling";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'playlist', pathMatch: 'full' },
@@ -119,7 +122,8 @@ export const routes: Routes = [
     MatSortModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatToolbarModule
+    MatToolbarModule,
+    ScrollingModule
   ],
   providers: [
     PlaylistService,

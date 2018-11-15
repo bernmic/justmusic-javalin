@@ -9,7 +9,7 @@ import {Observable} from "rxjs/index";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy{
+export class AppComponent implements OnDestroy {
 
   mobileQuery: MediaQueryList;
 
