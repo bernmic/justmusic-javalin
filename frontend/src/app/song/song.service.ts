@@ -5,10 +5,12 @@ import {Song, SongCollection} from "./song.model";
 import {Observable} from "rxjs/index";
 import {Paging} from "../shared/paging.model";
 import {isNullOrUndefined} from "util";
+import {BaseService} from "../shared/base.service";
 
 @Injectable()
-export class SongService {
+export class SongService extends BaseService {
   constructor(private http: HttpClient) {
+    super();
   }
 
   getSongs(uri: string, filter: string, paging?: Paging): Observable<SongCollection> {
@@ -49,33 +51,5 @@ export class SongService {
 
   getSong(id: string): Observable<Song> {
     return this.http.get<Song>(environment.restserver + "/api/song/" + id);
-  }
-
-  getPagingForUrl(paging?: Paging): string {
-    let s = "";
-    if (isNullOrUndefined(paging)) {
-      return s;
-    }
-    if (!isNullOrUndefined(paging.sort)) {
-      s += "sort=" + paging.sort;
-      if (isNullOrUndefined(paging.dir)) {
-        s += "&dir=asc";
-      } else {
-        s += "&dir=" + paging.dir;
-      }
-    }
-    if (paging.size > 0) {
-      if (s !== "") {
-        s += "&";
-      }
-      s += "size=" + paging.size;
-      if (paging.page > 0) {
-        s += "&page=" + paging.page;
-      }
-    }
-    if (s !== "") {
-      s = "?" + s;
-    }
-    return s;
   }
 }

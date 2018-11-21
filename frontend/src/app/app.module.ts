@@ -37,7 +37,6 @@ import {AppComponent} from './app.component';
 import {PlaylistComponent} from './playlist/playlist.component';
 import {PlaylistService} from "./playlist/playlist.service";
 import {PlaylistDetailComponent} from "./playlist/playlist-detail.component";
-import {SongsComponent} from './song/songs.component';
 import {AlbumListComponent} from './album/album-list.component';
 import {ArtistListComponent} from './artist/artist-list.component';
 import {SongService} from "./song/song.service";
@@ -53,8 +52,6 @@ import {LoginComponent} from "./security/login.component";
 import {AuthService} from "./security/auth.service";
 import {AuthGuardService} from "./security/auth-guard.service";
 import {TokenInterceptor} from "./security/token.interceptor";
-import {ArtistsComponent} from "./artist/artists.component";
-import {AlbumsComponent} from "./album/albums.component";
 import {PlaylistSelectDialogComponent} from "./song/playlist-select-dialog.component";
 import {OverviewComponent} from "./overview/overview.component";
 import {OverviewService} from "./overview/overview.service";
@@ -66,8 +63,8 @@ export const routes: Routes = [
   { path: 'playlist/:id', component: PlaylistDetailComponent, canActivate: [AuthGuardService] },
   { path: 'song', component: SongListComponent, canActivate: [AuthGuardService] },
   { path: 'song/:type/:id', component: SongListComponent, canActivate: [AuthGuardService] },
-  { path: 'album', component: AlbumsComponent, canActivate: [AuthGuardService] },
-  { path: 'artist', component: ArtistsComponent, canActivate: [AuthGuardService] },
+  { path: 'album', component: AlbumListComponent, canActivate: [AuthGuardService] },
+  { path: 'artist', component: ArtistListComponent, canActivate: [AuthGuardService] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent }
 ];
@@ -78,12 +75,9 @@ export const routes: Routes = [
     PlaylistComponent,
     PlaylistDetailComponent,
     PlaylistSelectDialogComponent,
-    SongsComponent,
     SongListComponent,
-    AlbumsComponent,
     AlbumListComponent,
     AlbumCoverComponent,
-    ArtistsComponent,
     ArtistListComponent,
     PlayerComponent,
     LoginComponent,

@@ -5,14 +5,26 @@ import {environment} from "../../environments/environment";
 import {SongService} from "../song/song.service";
 import {Artist, ArtistCollection} from "./artist.model";
 import {Album} from "../album/album.model";
+import {Paging} from "../shared/paging.model";
+import {isNullOrUndefined} from "util";
+import {BaseService} from "../shared/base.service";
 
 @Injectable()
-export class ArtistService {
+export class ArtistService extends BaseService {
   constructor(private http: HttpClient, private songService: SongService) {
+    super();
   }
 
-  getAllArtists(): Observable<ArtistCollection> {
-    return this.http.get<ArtistCollection>(environment.restserver + "/api/artist");
+  getAllArtists(filter: string, paging?: Paging): Observable<ArtistCollection> {
+    let parameter =  this.getPagingForUrl(paging);
+    if (!isNullOrUndefined(filter) && filter !== "") {
+      if (parameter === "") {
+        parameter = "?filter=" + filter;
+      } else {
+        parameter += "&filter=" + filter;
+      }
+    }
+    return this.http.get<ArtistCollection>(environment.restserver + "/api/artist" + parameter);
   }
 
   getArtist(id: string): Observable<Artist> {

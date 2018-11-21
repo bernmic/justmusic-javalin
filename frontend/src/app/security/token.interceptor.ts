@@ -28,7 +28,8 @@ export class TokenInterceptor implements HttpInterceptor {
     //console.log(request);
     return next.handle(request).pipe(
       catchError(response => {
-        console.log("Catched error");
+        console.log("Catched error: ");
+        console.log(response);
         if (response instanceof HttpErrorResponse) {
           if (response.status === 401) {
             this.router.navigate(["/login"/*, {message: "Token not found or invalid."}*/]);

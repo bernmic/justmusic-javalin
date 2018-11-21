@@ -5,5 +5,5 @@ export class Album {
 }
 
 export class AlbumCollection {
-  constructor(public albums: Album[], public paging: Paging, total: number) {}
+  constructor(public albums: Album[], public paging: Paging, public total: number) {}
 }

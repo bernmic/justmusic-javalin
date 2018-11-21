@@ -1,12 +1,61 @@
-mat-list-item:hover {
-  background-color: beige;
+.mat-row {
+  min-height: 0px;
+  padding: 2px 0px 2px 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-row:hover {
   cursor: pointer;
 }
 
-.album-link {
-  text-decoration: none !important;
+.mat-cell {
+  font-size: 0.66rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mat-header-cell {
+  font-size: 0.66rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.artist-link {
-  text-decoration: none !important;
+.mat-header-row {
+  min-height: 40px;
+  padding: 0 0;
+}
+
+.mat-column-name {
+  flex: 0 0 100%;
+}
+
+.only-on-hover {
+  opacity: 0.25;
+  transition: all ease 0.8s;
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+}
+
+.only-on-hover:hover {
+  opacity: 1;
+}
+
+.spinner-container {
+  height: 360px;
+  width: 390px;
+  position: fixed;
+}
+
+.artists-table {
+  min-height: 360px;
+  margin-top: 10px;
+}
+
+.spinner-container mat-spinner {
+  margin: 130px auto 0 auto;
 }
