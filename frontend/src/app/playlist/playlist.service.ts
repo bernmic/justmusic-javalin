@@ -25,7 +25,7 @@ export class PlaylistService {
   }
 
   addSongsToPlaylist(playlistId: string, songIds: string[]): Observable<any> {
-    return this.http.post(environment.restserver + "/api/playlist/" + playlistId + "/artists", songIds);
+    return this.http.post(environment.restserver + "/api/playlist/" + playlistId + "/songs", songIds);
   }
 
   savePlaylist(playlist: Playlist): Observable<Playlist> {
