@@ -17,7 +17,7 @@ export class AlbumService extends BaseService {
   }
 
   getAllAlbums(filter: string, paging?: Paging): Observable<AlbumCollection> {
-    let parameter =  this.getPagingForUrl(paging);
+    let parameter = this.getPagingForUrl(paging);
     if (!isNullOrUndefined(filter) && filter !== "") {
       if (parameter === "") {
         parameter = "?filter=" + filter;

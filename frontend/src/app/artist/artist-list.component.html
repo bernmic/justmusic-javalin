@@ -1,4 +1,4 @@
-<div class="song">
+<div class="artist">
   <mat-form-field>
     <mat-placeholder><mat-icon>search</mat-icon></mat-placeholder>
     <input matInput #input>
@@ -17,12 +17,10 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-
-  <mat-paginator #paginator
-                 [length]="total"
-                 [pageSize]="pageSize"
-                 [pageIndex]="pageIndex"
-                 [pageSizeOptions]="pageSizeOptions"
-                 [showFirstLastButtons]="true">
-  </mat-paginator>
+    <mat-paginator #paginator
+                   [length]="total"
+                   [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   [showFirstLastButtons]="true">
+    </mat-paginator>
 </div>
