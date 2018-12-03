@@ -19,7 +19,7 @@ export class AlbumListComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('input') input: ElementRef;
 
   pageSize = 12;
-  pageSizeOptions = [8, 12, 16, 32];
+  pageSizeOptions = [6, 12, 24, 48];
   total = 0;
   pageIndex = 0;
 

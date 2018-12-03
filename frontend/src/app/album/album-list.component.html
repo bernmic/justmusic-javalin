@@ -6,9 +6,9 @@
     <input matInput #input>
   </mat-form-field>
 
-  <mat-grid-list [cols]="mobileQuery.matches ? 2 : 4">
+  <mat-grid-list [cols]="mobileQuery.matches ? 2 : 6" rowHeight="1:1">
     <mat-grid-tile *ngFor="let album of albums">
-      <album-cover [album]="album"></album-cover>
+      <a routerLink="/song/album/{{album.albumId}}"><img [src]="cover(album)" class="cover"></a>
     </mat-grid-tile>
   </mat-grid-list>
   <mat-paginator #paginator

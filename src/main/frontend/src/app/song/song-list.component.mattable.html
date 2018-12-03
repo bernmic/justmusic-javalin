@@ -1,0 +1,36 @@
+<mat-table matSort #songtable [dataSource]="dataSource">
+  <ng-container matColumnDef="command">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let song">
+      <mat-icon class="only-on-hover" color="accent" (click)="playSong(song)">play_arrow</mat-icon>
+      <mat-icon class="only-on-hover" color="accent" (click)="queueSong(song)">queue</mat-icon>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="title">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
+    <mat-cell *matCellDef="let song"> {{song.title}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="artist">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Artist </mat-header-cell>
+    <mat-cell *matCellDef="let song"> {{song.artist?.name}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="album">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Album </mat-header-cell>
+    <mat-cell *matCellDef="let song"> {{song.album?.title}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="track">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Track </mat-header-cell>
+    <mat-cell *matCellDef="let song"> {{song.track}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="duration">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Duration </mat-header-cell>
+    <mat-cell *matCellDef="let song"> {{song.duration | duration}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="year">
+    <mat-header-cell *matHeaderCellDef mat-sort-header> Year </mat-header-cell>
+    <mat-cell *matCellDef="let song"> {{song.yearPublished}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
