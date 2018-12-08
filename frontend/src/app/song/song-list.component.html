@@ -1,4 +1,4 @@
-<div class="song">
+<div class="song" [ngClass]="{'cover':kind==='album'}">
   <span [style.visibility]="kind!=='' ? 'visible' : 'hidden'">{{headline}}</span>
   <mat-form-field [style.visibility]="kind==='' ? 'visible' : 'hidden'">
     <mat-placeholder><mat-icon>search</mat-icon></mat-placeholder>

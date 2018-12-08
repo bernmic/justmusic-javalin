@@ -58,7 +58,7 @@ import {OverviewService} from "./overview/overview.service";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'playlist', pathMatch: 'full' },
+  { path: '', redirectTo: 'overview', pathMatch: 'full' },
   { path: 'playlist', component: PlaylistComponent, canActivate: [AuthGuardService] },
   { path: 'playlist/:id', component: PlaylistDetailComponent, canActivate: [AuthGuardService] },
   { path: 'song', component: SongListComponent, canActivate: [AuthGuardService] },

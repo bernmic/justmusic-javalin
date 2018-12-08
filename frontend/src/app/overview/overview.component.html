@@ -1,36 +1,82 @@
-<mat-list dense>
-  <h3 mat-subheader>Statistics</h3>
-  <mat-list-item class="clickable" (click)="goto('/song')">
-    <mat-icon mat-list-icon>library_music</mat-icon>
-    <h4 mat-line>Songs in library</h4>
-    <p mat-line> {{info.songCount}} </p>
-  </mat-list-item>
-  <mat-list-item class="clickable" (click)="goto('/album')">
-    <mat-icon mat-list-icon>album</mat-icon>
-    <h4 mat-line>Albums in library</h4>
-    <p mat-line> {{info.albumCount}} </p>
-  </mat-list-item>
-  <mat-list-item class="clickable" (click)="goto('/artist')">
-    <mat-icon mat-list-icon>people</mat-icon>
-    <h4 mat-line>Artists in library</h4>
-    <p mat-line> {{info.artistCount}} </p>
-  </mat-list-item>
-  <mat-list-item class="clickable" (click)="goto('/playlist')">
-    <mat-icon mat-list-icon>featured_play_list</mat-icon>
-    <h4 mat-line>Playlists in library</h4>
-    <p mat-line> {{info.playlistCount}} </p>
-  </mat-list-item>
-  <mat-list-item>
-    <mat-icon mat-list-icon>face</mat-icon>
-    <h4 mat-line>Users</h4>
-    <p mat-line> {{info.userCount}} </p>
-  </mat-list-item>
-  <mat-divider></mat-divider>
-  <h3 mat-subheader>Recently added songs</h3>
-  <mat-list-item class="clickable" *ngFor="let song of info?.songsRecentlyAdded" (click)="playSong(song)">
-    <mat-icon mat-list-icon>music_note</mat-icon>
-    <h4 mat-line>{{song.title}}</h4>
-    <p mat-line> {{song.artist?.name}} </p>
-  </mat-list-item>
-</mat-list>
-
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Statistics</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="block clickable" (click)="goto('/song')">
+          <span class="pull-left">Songs in library</span>
+          <span class="pull-right">{{info?.songCount}}</span>
+        </div>
+        <div class="block clickable" (click)="goto('/album')">
+          <span class="pull-left">Albums in library</span>
+          <span class="pull-right">{{info?.albumCount}}</span>
+        </div>
+        <div class="block clickable" (click)="goto('/artist')">
+          <span class="pull-left">Artists in library</span>
+          <span class="pull-right">{{info?.artistCount}}</span>
+        </div>
+        <div class="block clickable" (click)="goto('/playlist')">
+          <span class="pull-left">Playlists in library</span>
+          <span class="pull-right">{{info?.playlistCount}}</span>
+        </div>
+        <div class="block">
+          <span class="pull-left">Users in library</span>
+          <span class="pull-right">{{info?.userCount}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Recently added songs</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="block clickable" *ngFor="let song of info?.songsRecentlyAdded" (click)="playSong(song)">
+          <span class="pull-left">{{song.title}}</span>
+          <span class="pull-right">{{song.artist.name}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Recently played songs</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="block clickable" *ngFor="let song of info?.songsRecentlyPlayed" (click)="playSong(song)">
+          <span class="pull-left">{{song.title}}</span>
+          <span class="pull-right">{{song.artist.name}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Most played songs</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="block clickable" *ngFor="let song of info?.songsMostPlayed" (click)="playSong(song)">
+          <span class="pull-left">{{song.title}}</span>
+          <span class="pull-right">{{song.artist.name}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Recently added albums</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="block clickable" *ngFor="let album of info?.albumsRecentlyAdded" (click)="goto('/song/album/' + album.albumId)">
+          <span class="pull-left">{{album.title}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
