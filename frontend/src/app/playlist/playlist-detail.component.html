@@ -18,3 +18,35 @@
   <a mat-flat-button routerLink="/playlist"><mat-icon>undo</mat-icon>Cancel</a>
   <a mat-flat-button color="accent" routerLink="/song/playlist/{{playlist?.playlistId}}" *ngIf="!isNew()"><mat-icon>list</mat-icon>Show</a>
 </form>
+<hr/>
+<mat-accordion [multi]="true" *ngIf="kind===KIND_QUERY">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Available fields
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <button mat-button (click)="queryAdd('album')">album</button>
+    <button mat-button (click)="queryAdd('artist')">artist</button>
+    <button mat-button (click)="queryAdd('song')">song</button>
+    <button mat-button (click)="queryAdd('genre')">genre</button>
+    <button mat-button (click)="queryAdd('duration')">duration</button>
+    <button mat-button (click)="queryAdd('year')">year</button>
+    <button mat-button (click)="queryAdd('track')">track</button>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Available logical operations
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <button mat-button (click)="queryAdd('==')">==</button>
+    <button mat-button (click)="queryAdd('!=')">!=</button>
+    <button mat-button (click)="queryAdd('>')">&gt;</button>
+    <button mat-button (click)="queryAdd('>=')">&gt;=</button>
+    <button mat-button (click)="queryAdd('<')">&lt;</button>
+    <button mat-button (click)="queryAdd('<=')">&lt;=</button>
+    <button mat-button (click)="queryAdd('&&')">&amp;&amp;</button>
+    <button mat-button (click)="queryAdd('||')">||</button>
+  </mat-expansion-panel>
+</mat-accordion>

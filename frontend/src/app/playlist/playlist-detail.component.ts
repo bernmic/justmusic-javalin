@@ -62,4 +62,9 @@ export class PlaylistDetailComponent implements OnInit {
     }
     return false;
   }
+
+  queryAdd(s: string) {
+    this.queryInput.nativeElement.value = this.queryInput.nativeElement.value + s;
+    this.queryInput.nativeElement.focus();
+  }
 }
