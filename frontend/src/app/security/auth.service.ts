@@ -4,6 +4,7 @@ import {BehaviorSubject} from "rxjs";
 import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,13 @@ export class AuthService {
     return this.loggedIn.asObservable();
   }
 
+  isAdmin() {
+    if (isNullOrUndefined(this.auth)) {
+      return false;
+    }
+    return this.auth.isAdmin;
+  }
+
   getToken() {
     return this.token;
   }
@@ -29,6 +37,7 @@ export class AuthService {
       // headers = headers.append("Content-Type", "application/x-www-form-urlencoded");
       this.http.get(environment.restserver + "/token", {headers: headers}).subscribe(response => {
         this.token = response['token'];
+        this.auth = new Auth(response['token'], username, response['role'] === "admin");
         console.log("Successfully logged in with token " + this.token);
         this.loggedIn.next(true);
         this.router.navigate(['/']);

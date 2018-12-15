@@ -43,7 +43,14 @@ export class AppComponent implements OnDestroy {
     localStorage.setItem("theme", theme);
   }
 
+  goHome() {
+    this.router.navigate(["/"])
+  }
+
   isLoggedIn(): Observable<boolean> {
     return this.authService.isLoggedIn;
+  }
+  isAdmin(): boolean {
+    return this.authService.isAdmin()
   }
 }

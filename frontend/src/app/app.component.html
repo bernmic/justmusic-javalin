@@ -2,7 +2,7 @@
   <div class="main-container" [class.is-mobile]="mobileQuery.matches">
     <mat-toolbar color="primary" class="main-navbar">
       <button mat-icon-button (click)="lsnav.toggle()"><mat-icon>menu</mat-icon></button>
-      <h1 class="app-name">JustMusic</h1>
+      <h1 class="app-name" (click)="goHome()">JustMusic</h1>
       <span class="navbar-spacer"></span>
       <button mat-icon-button [matMenuTriggerFor]="themeMenu">
         <mat-icon class="navbar-icon">format_color_fill</mat-icon>
@@ -16,7 +16,7 @@
     <mat-sidenav-container class="left-sidenav-container"
                            [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
       <mat-sidenav [opened]="!mobileQuery.matches" #lsnav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                   [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+                   [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" *ngIf="isLoggedIn() | async">
         <mat-nav-list>
           <mat-list-item routerLinkActive="active" [routerLink]="['/overview']" class="mat-primary">
             <mat-icon matListIcon color="accent">dashboard</mat-icon>
@@ -56,17 +56,21 @@
   </div>
 
   <mat-menu #userMenu="matMenu">
-    <button mat-menu-item routerLink="/login">
+    <button mat-menu-item routerLink="/login" *ngIf="!(isLoggedIn() | async)">
       <mat-icon>account_circle</mat-icon>
       <span i18n="@@menuLogin">Login</span>
+    </button>
+    <button mat-menu-item *ngIf="isLoggedIn() | async">
+      <mat-icon>settings</mat-icon>
+      <span i18n="@@menuProfile">Settings</span>
+    </button>
+    <button mat-menu-item *ngIf="isAdmin()">
+      <mat-icon>build</mat-icon>
+      <span i18n="@@menuProfile">Administration</span>
     </button>
     <button mat-menu-item>
       <mat-icon>help</mat-icon>
       <span i18n="@@menuHelp">Help</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>build</mat-icon>
-      <span i18n="@@menuProfile">Profile</span>
     </button>
   </mat-menu>
   <mat-menu #themeMenu="matMenu">
