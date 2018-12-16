@@ -1,0 +1,12 @@
+.user-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-form> * {
+  width: 100%;
+}
+
+.message {
+  font-weight: bold;
+}

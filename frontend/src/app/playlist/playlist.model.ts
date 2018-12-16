@@ -6,5 +6,5 @@ export class Playlist {
 }
 
 export class PlaylistCollection {
-  constructor(public playlists: Playlist[], public paging: Paging, total: number) {}
+  constructor(public playlists: Playlist[], public paging: Paging, public total: number) {}
 }

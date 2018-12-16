@@ -58,6 +58,9 @@ import {OverviewService} from "./overview/overview.service";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import { ConfigComponent } from './config/config.component';
 import {ConfigService} from "./config/config.service";
+import {UserListComponent} from "./user/user-list.component";
+import {UserDetailComponent} from "./user/user-detail.component";
+import {UserService} from "./user/user.service";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'full' },
@@ -69,6 +72,8 @@ export const routes: Routes = [
   { path: 'artist', component: ArtistListComponent, canActivate: [AuthGuardService] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuardService] },
   { path: 'config', component: ConfigComponent, canActivate: [AuthGuardService] },
+  { path: 'user', component: UserListComponent, canActivate: [AuthGuardService] },
+  { path: 'user/:id', component: UserDetailComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent }
 ];
 
@@ -87,7 +92,9 @@ export const routes: Routes = [
     OverviewComponent,
     DurationPipe,
     UnixdatePipe,
-    ConfigComponent
+    ConfigComponent,
+    UserListComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -133,6 +140,7 @@ export const routes: Routes = [
     ArtistService,
     OverviewService,
     ConfigService,
+    UserService,
     AuthService,
     AuthGuardService,
     {

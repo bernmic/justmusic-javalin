@@ -51,6 +51,10 @@ export class AppComponent implements OnDestroy {
     this.router.navigate(["/config"])
   }
 
+  gotoUsermanagement() {
+    this.router.navigate(["/user"])
+  }
+
   isLoggedIn(): Observable<boolean> {
     return this.authService.isLoggedIn;
   }

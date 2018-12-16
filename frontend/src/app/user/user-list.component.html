@@ -1,0 +1,35 @@
+<div class="user">
+  <mat-form-field>
+    <mat-placeholder><mat-icon>search</mat-icon></mat-placeholder>
+    <input matInput #input>
+  </mat-form-field>
+  <button mat-button routerLink="/user/new"><mat-icon>add</mat-icon>Add new user</button>
+  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-table matSort #usertable [dataSource]="dataSource" class="users-table">
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+      <mat-cell *matCellDef="let user"> <a mat-button routerLink="/user/{{user.id}}"> {{user.username}} </a></mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>EMail</mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{user.email}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{user.role}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator #paginator
+                 [length]="total"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>
