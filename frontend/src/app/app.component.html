@@ -64,7 +64,7 @@
       <mat-icon>settings</mat-icon>
       <span i18n="@@menuProfile">Settings</span>
     </button>
-    <button mat-menu-item *ngIf="isAdmin()">
+    <button mat-menu-item *ngIf="isAdmin()" (click)="gotoConfig()">
       <mat-icon>build</mat-icon>
       <span i18n="@@menuProfile">Administration</span>
     </button>

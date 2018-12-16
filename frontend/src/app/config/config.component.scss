@@ -1,0 +1,12 @@
+.config-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.config-form> * {
+  width: 100%;
+}
+
+.message {
+  font-weight: bold;
+}

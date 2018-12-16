@@ -8,9 +8,9 @@ import {
   MatBadgeModule,
   MatButtonModule,
   MatButtonToggleModule,
-  MatCardModule,
+  MatCardModule, MatCheckboxModule,
   MatDatepickerModule,
-  MatDialogModule,
+  MatDialogModule, MatDividerModule,
   MatExpansionModule,
   MatFormFieldModule,
   MatGridListModule,
@@ -56,6 +56,8 @@ import {PlaylistSelectDialogComponent} from "./song/playlist-select-dialog.compo
 import {OverviewComponent} from "./overview/overview.component";
 import {OverviewService} from "./overview/overview.service";
 import {ScrollingModule} from "@angular/cdk/scrolling";
+import { ConfigComponent } from './config/config.component';
+import {ConfigService} from "./config/config.service";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'full' },
@@ -66,6 +68,7 @@ export const routes: Routes = [
   { path: 'album', component: AlbumListComponent, canActivate: [AuthGuardService] },
   { path: 'artist', component: ArtistListComponent, canActivate: [AuthGuardService] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuardService] },
+  { path: 'config', component: ConfigComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent }
 ];
 
@@ -83,7 +86,8 @@ export const routes: Routes = [
     LoginComponent,
     OverviewComponent,
     DurationPipe,
-    UnixdatePipe
+    UnixdatePipe,
+    ConfigComponent
   ],
   imports: [
     BrowserModule,
@@ -96,8 +100,10 @@ export const routes: Routes = [
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatGridListModule,
@@ -126,6 +132,7 @@ export const routes: Routes = [
     AlbumService,
     ArtistService,
     OverviewService,
+    ConfigService,
     AuthService,
     AuthGuardService,
     {

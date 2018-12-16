@@ -1,0 +1,75 @@
+<mat-card>
+  <mat-card-title>go2music Configuration</mat-card-title>
+  <mat-card-content>
+    <form>
+      <div class="config-form">
+        <h2>Database</h2>
+        <mat-divider></mat-divider>
+        <mat-form-field>
+          <mat-select placeholder="Type" name="databasetype" [(ngModel)]="databaseType">
+            <mat-option value="mysql">MySQL</mat-option>
+            <mat-option value="postgres">PostgreSQL</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Username" name="databaseusername" [(ngModel)]="databaseUsername">
+        </mat-form-field>
+        <mat-form-field>
+          <input type="password" matInput placeholder="Password" name="databasepassword" [(ngModel)]="databasePassword">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Schema" name="databaseschema" [(ngModel)]="databaseSchema">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Url" name="databaseurl" [(ngModel)]="databaseUrl">
+        </mat-form-field>
+        <h2>Media</h2>
+        <mat-divider></mat-divider>
+        <mat-form-field>
+          <input matInput placeholder="Path" name="mediapath" [(ngModel)]="mediaPath">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Sync frequency" name="mediasyncfrequency" [(ngModel)]="mediaSyncFrequency">
+        </mat-form-field>
+        <mat-checkbox name="syncatstart" [(ngModel)]="mediaSyncAtStart">Sync at start</mat-checkbox>
+        <h2>Server</h2>
+        <mat-divider></mat-divider>
+        <mat-form-field>
+          <input type="number" matInput placeholder="Port" name="serverport" [(ngModel)]="serverPort">
+        </mat-form-field>
+        <h2>Application</h2>
+        <mat-divider></mat-divider>
+        <mat-form-field>
+          <mat-select placeholder="Run mode" name="applicationmode" [(ngModel)]="applicationMode">
+            <mat-option value="release">Production</mat-option>
+            <mat-option value="test">Test</mat-option>
+            <mat-option value="debug">Development</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Loglevel" name="applicationloglevel" [(ngModel)]="applicationLoglevel">
+            <mat-option value="trace">Trace</mat-option>
+            <mat-option value="debug">Debug</mat-option>
+            <mat-option value="info">Info</mat-option>
+            <mat-option value="warning">Warning</mat-option>
+            <mat-option value="error">Error</mat-option>
+            <mat-option value="fatal">Fatal</mat-option>
+            <mat-option value="panic">Panic</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Cors" name="applicationcors" [(ngModel)]="applicationCors">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="direct">Direct</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+    <span class="message">{{message}}</span>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="saveConfig()"><mat-icon>done</mat-icon>Save</button>
+    <button mat-button (click)="resetFields()"><mat-icon>undo</mat-icon>Reset</button>
+    <button mat-button (click)="cancelClicked()"><mat-icon>cancel</mat-icon>Cancel</button>
+  </mat-card-actions>
+</mat-card>
