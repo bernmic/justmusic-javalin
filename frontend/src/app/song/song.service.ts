@@ -38,15 +38,15 @@ export class SongService extends BaseService {
   }
 
   getAllSongsOfAlbum(id: string, paging?: Paging): Observable<SongCollection> {
-    return this.http.get<SongCollection>(environment.restserver + "/api/album/" + id + "/users" + this.getPagingForUrl(paging));
+    return this.http.get<SongCollection>(environment.restserver + "/api/album/" + id + "/songs" + this.getPagingForUrl(paging));
   }
 
   getAllSongsOfArtist(id: string, paging?: Paging): Observable<SongCollection> {
-    return this.http.get<SongCollection>(environment.restserver + "/api/artist/" + id + "/users" + this.getPagingForUrl(paging));
+    return this.http.get<SongCollection>(environment.restserver + "/api/artist/" + id + "/songs" + this.getPagingForUrl(paging));
   }
 
   getAllSongsOfPlaylist(id: string, paging?: Paging): Observable<SongCollection> {
-    return this.http.get<SongCollection>(environment.restserver + "/api/playlist/" + id + "/users" + this.getPagingForUrl(paging));
+    return this.http.get<SongCollection>(environment.restserver + "/api/playlist/" + id + "/songs" + this.getPagingForUrl(paging));
   }
 
   getSong(id: string): Observable<Song> {
