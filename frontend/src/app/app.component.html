@@ -1,7 +1,7 @@
 <div [ngClass]="currentTheme()">
   <div class="main-container" [class.is-mobile]="mobileQuery.matches">
     <mat-toolbar color="primary" class="main-navbar">
-      <button mat-icon-button (click)="lsnav.toggle()"><mat-icon>menu</mat-icon></button>
+      <button mat-icon-button (click)="lsnav.toggle()" *ngIf="isLoggedIn() | async"><mat-icon>menu</mat-icon></button>
       <h1 class="app-name" (click)="goHome()">JustMusic</h1>
       <span class="navbar-spacer"></span>
       <button mat-icon-button [matMenuTriggerFor]="themeMenu">
