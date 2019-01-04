@@ -14,3 +14,17 @@ export class Info {
     public albumsRecentlyAdded: Album[]
   ) {}
 }
+
+export class Sync {
+  constructor(
+    public state: string,
+    public last_sync_started: number,
+    public last_sync_duration: number,
+    public songs_found: number,
+    public new_songs_added: number,
+    public new_songs_problems: number,
+    public dangling_songs_found: number,
+    public problem_songs: any,
+    public dangling_songs: any
+  ) {}
+}

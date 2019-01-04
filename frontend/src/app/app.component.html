@@ -72,6 +72,10 @@
       <mat-icon>people</mat-icon>
       <span i18n="@@menuUsers">Usermanagement</span>
     </button>
+    <button mat-menu-item *ngIf="isLoggedIn() | async" (click)="logout()">
+      <mat-icon>power_settings_new</mat-icon>
+      <span i18n="@@menuLogout">Logout</span>
+    </button>
     <button mat-menu-item>
       <mat-icon>help</mat-icon>
       <span i18n="@@menuHelp">Help</span>

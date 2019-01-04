@@ -79,4 +79,41 @@
       </mat-card-content>
     </mat-card>
   </mat-grid-tile>
+  <mat-grid-tile *ngIf="isAdmin()">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Sync state</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="block">
+          <span class="pull-left">Sync state</span>
+          <span class="pull-right">{{sync?.state}}</span>
+        </div>
+        <div class="block">
+          <span class="pull-left">Last sync</span>
+          <span class="pull-right">{{sync?.last_sync_started * 1000 | unixdate}}</span>
+        </div>
+        <div class="block">
+          <span class="pull-left">Last sync duration</span>
+          <span class="pull-right">{{sync?.last_sync_duration | duration}}</span>
+        </div>
+        <div class="block">
+          <span class="pull-left">Songs found</span>
+          <span class="pull-right">{{sync?.songs_found}}</span>
+        </div>
+        <div class="block">
+          <span class="pull-left">Songs added</span>
+          <span class="pull-right">{{sync?.new_songs_added}}</span>
+        </div>
+        <div class="block">
+          <span class="pull-left">Not added</span>
+          <span class="pull-right">{{sync?.new_songs_problems}}</span>
+        </div>
+        <div class="block">
+          <span class="pull-left">Dangling songs</span>
+          <span class="pull-right">{{sync?.dangling_songs_found}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
 </mat-grid-list>

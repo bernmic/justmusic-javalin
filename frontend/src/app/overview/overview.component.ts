@@ -1,9 +1,10 @@
 import {Component, OnInit} from "@angular/core";
-import {Info} from "./overview.model";
+import {Info, Sync} from "./overview.model";
 import {OverviewService} from "./overview.service";
 import {Router} from "@angular/router";
 import {Song} from "../song/song.model";
 import {PlayerService} from "../player/player.service";
+import {AuthService} from "../security/auth.service";
 
 @Component({
   selector: 'app-info',
@@ -12,12 +13,21 @@ import {PlayerService} from "../player/player.service";
 })
 export class OverviewComponent implements OnInit {
   info: Info;
+  sync: Sync;
 
-  constructor(private overviewService: OverviewService, private playerService: PlayerService, private router: Router) {}
+  constructor(
+    private overviewService: OverviewService,
+    private playerService: PlayerService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.overviewService.getInfo().subscribe(info => {
       this.info = info;
+    });
+    this.overviewService.getSync().subscribe(sync => {
+      this.sync = sync;
     });
   }
 
@@ -29,4 +39,8 @@ export class OverviewComponent implements OnInit {
     this.playerService.playSong(song);
   }
 
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin()
+  }
 }
