@@ -1,0 +1,39 @@
+<div
+  gdAreas="header | content | footer"
+  gdGap="16px"
+  gdRows="auto auto auto">
+  <div gdArea="header">
+    <mat-form-field>
+      <mat-placeholder>
+        <mat-icon>search</mat-icon>
+      </mat-placeholder>
+      <input matInput #input>
+    </mat-form-field>
+  </div>
+  <div gdArea="content">
+    <div class="album full-container"
+         fxLayout="row wrap"
+         fxLayout.lt-sm="column"
+         fxLayoutGap="5px"
+         fxLayoutAlign="flex-start">
+      <ng-container *ngFor="let album of albums">
+        <app-album-cover-new
+          [album]="album"
+          fxFlex="0 1 calc(20% - 5px)"
+          fxFlex.lt-lg="0 1 calc(25% - 5px)"
+          fxFlex.lt-md="0 1 calc(33.3% - 5px)"
+          fxFlex.lt-sm="0 1 calc(50% - 5px)"
+        ></app-album-cover-new>
+      </ng-container>
+    </div>
+  </div>
+  <div gdArea="footer">
+    <mat-paginator #paginator
+                   [length]="total"
+                   [pageSize]="pageSize"
+                   [pageIndex]="pageIndex"
+                   [pageSizeOptions]="pageSizeOptions"
+                   [showFirstLastButtons]="true">
+    </mat-paginator>
+  </div>
+</div>

@@ -29,7 +29,7 @@ import {
   MatSnackBarModule,
   MatSortModule,
   MatTableModule,
-  MatToolbarModule
+  MatToolbarModule, MatTooltipModule
 } from "@angular/material";
 import {LayoutModule} from "@angular/cdk/layout";
 
@@ -61,6 +61,9 @@ import {ConfigService} from "./config/config.service";
 import {UserListComponent} from "./user/user-list.component";
 import {UserDetailComponent} from "./user/user-detail.component";
 import {UserService} from "./user/user.service";
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {AlbumCoverNewComponent} from "./album/album-cover.new.component";
+import {AlbumListNewComponent} from "./album/album-list-new.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'full' },
@@ -69,6 +72,7 @@ export const routes: Routes = [
   { path: 'song', component: SongListComponent, canActivate: [AuthGuardService] },
   { path: 'song/:type/:id', component: SongListComponent, canActivate: [AuthGuardService] },
   { path: 'album', component: AlbumListComponent, canActivate: [AuthGuardService] },
+  { path: 'album-new', component: AlbumListNewComponent, canActivate: [AuthGuardService] },
   { path: 'artist', component: ArtistListComponent, canActivate: [AuthGuardService] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuardService] },
   { path: 'config', component: ConfigComponent, canActivate: [AuthGuardService] },
@@ -85,7 +89,9 @@ export const routes: Routes = [
     PlaylistSelectDialogComponent,
     SongListComponent,
     AlbumListComponent,
+    AlbumListNewComponent,
     AlbumCoverComponent,
+    AlbumCoverNewComponent,
     ArtistListComponent,
     PlayerComponent,
     LoginComponent,
@@ -99,6 +105,7 @@ export const routes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
@@ -130,6 +137,7 @@ export const routes: Routes = [
     MatProgressSpinnerModule,
     MatTableModule,
     MatToolbarModule,
+    MatTooltipModule,
     ScrollingModule
   ],
   providers: [
