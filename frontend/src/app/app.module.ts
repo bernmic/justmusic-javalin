@@ -64,6 +64,7 @@ import {UserService} from "./user/user.service";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {AlbumCoverNewComponent} from "./album/album-cover.new.component";
 import {AlbumListNewComponent} from "./album/album-list-new.component";
+import {ArtistNewListComponent} from "./artist/artist-new-list.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: 'overview', pathMatch: 'full' },
@@ -74,6 +75,7 @@ export const routes: Routes = [
   { path: 'album', component: AlbumListComponent, canActivate: [AuthGuardService] },
   { path: 'album-new', component: AlbumListNewComponent, canActivate: [AuthGuardService] },
   { path: 'artist', component: ArtistListComponent, canActivate: [AuthGuardService] },
+  { path: 'artist-new', component: ArtistNewListComponent, canActivate: [AuthGuardService] },
   { path: 'overview', component: OverviewComponent, canActivate: [AuthGuardService] },
   { path: 'config', component: ConfigComponent, canActivate: [AuthGuardService] },
   { path: 'user', component: UserListComponent, canActivate: [AuthGuardService] },
@@ -93,6 +95,7 @@ export const routes: Routes = [
     AlbumCoverComponent,
     AlbumCoverNewComponent,
     ArtistListComponent,
+    ArtistNewListComponent,
     PlayerComponent,
     LoginComponent,
     OverviewComponent,

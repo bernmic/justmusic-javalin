@@ -1,0 +1,7 @@
+<cdk-virtual-scroll-viewport [itemSize]="20">
+  <ul>
+    <li *cdkVirtualFor="let artist of dataSource" (click)="gotoSongs(artist)">
+      {{artist?.name || 'Unknown'}}
+    </li>
+  </ul>
+</cdk-virtual-scroll-viewport>
