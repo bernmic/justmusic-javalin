@@ -27,7 +27,7 @@
     <jjwt.version>0.9.1</jjwt.version>
     <commons.lang3.version>3.9</commons.lang3.version>
     <commons.io.version>2.7</commons.io.version>
-    <commons-text.version>1.8</commons-text.version>
+    <commons-text.version>1.10.0</commons-text.version>
     <mp3agic.version>0.9.1</mp3agic.version>
     <hazelcast.version>4.0.5</hazelcast.version>
     <snakeyaml.version>1.31</snakeyaml.version>
